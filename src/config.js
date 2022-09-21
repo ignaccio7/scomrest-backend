@@ -4,7 +4,8 @@ config();
 
 export default {    
     host : "localhost",
-    database : "scomrestdb",
+    database : "dbscomrest",
     user : 'root',
-    password : '260298',
+    password : '',
+    SECRET:'scomrestGrupo8',
 };
