@@ -4,6 +4,7 @@ import pkg from '../package.json';
 //minuto20 https://www.youtube.com/watch?v=lV7mxivGX_I&t=7125s
 import personaRouter from './routes/persona.routes';
 import platoRouter from './routes/plato.routes';
+import ingredienteRouter from './routes/ingrediente.router';
 
 const cors = require('cors');
 
@@ -26,6 +27,7 @@ app.use(express.json());
 //rutas
 app.use('/api/persona/',personaRouter);
 app.use('/api/plato/',platoRouter);
+app.use('/api/ingrediente/',ingredienteRouter);
 
 app.get('/',(req,res)=>{
     res.json({

@@ -4,11 +4,8 @@ import config from '../config.js';
 
 const getPersonas = async (req, res) => {
     try {
-        console.log("aaaa");
         const connection = await getConnection();
-        console.log("aaaa");
         const result = await connection.query("SELECT * FROM usuario");
-        console.log("aaaa");
         console.log(result);
         res.json(result);
     } catch (error) {
@@ -97,7 +94,6 @@ const loginUsuario = async (req,res)=>{
             const token = jwt.sign({ci},config.SECRET,{
                 expiresIn:86400 //24h
             })
-
             console.log(result);
             res.json({token});
         } else {
