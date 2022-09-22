@@ -25,7 +25,7 @@ export const verifyToken = async (req, res, next) => {
 
         next();
     } catch (error) {
-        return res.json({message:'No autorizado'});
+        return res.status(400).json({message:'No autorizado'});
     }
 
 }

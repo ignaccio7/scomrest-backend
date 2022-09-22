@@ -98,7 +98,7 @@ const loginUsuario = async (req,res)=>{
             res.json({token});
         } else {
             console.log(result);
-            res.json({message:"Credenciales Incorrectas"});
+            res.status(400).json({message:"Credenciales Incorrectas"});
         }        
     } catch (error) {
         res.status(500); //error de lado del servidor
