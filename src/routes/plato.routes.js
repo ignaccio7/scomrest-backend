@@ -5,6 +5,7 @@ const router = Router();
 
 router.get('/',platoControllers.getPlatos);
 router.get('/:idProducto',platoControllers.getPlato);
-
+router.get('/ingredientes/:idProducto',platoControllers.getIngredientesPlato);
+router.post('/',platoControllers.addPlato);
 
 export default router;

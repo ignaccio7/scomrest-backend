@@ -5,6 +5,7 @@ import pkg from '../package.json';
 import personaRouter from './routes/persona.routes';
 import platoRouter from './routes/plato.routes';
 import ingredienteRouter from './routes/ingrediente.router';
+import pedidoRouter from './routes/pedido.routes';
 
 const cors = require('cors');
 
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use('/api/persona/',personaRouter);
 app.use('/api/plato/',platoRouter);
 app.use('/api/ingrediente/',ingredienteRouter);
+app.use('/api/pedido/',pedidoRouter);
 
 app.get('/',(req,res)=>{
     res.json({
