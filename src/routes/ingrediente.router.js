@@ -4,6 +4,9 @@ import { metodos as ingredienteController } from '../controllers/ingrediente.con
 const router = Router();
 
 router.get('/',ingredienteController.getIngredientes);
+router.get('/:idIng',ingredienteController.getIngrediente);
+router.post('/',ingredienteController.addIngrediente);
+router.delete('/:idIng',ingredienteController.deleteIngrediente);
 
 
 export default router;
