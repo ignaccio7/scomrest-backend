@@ -3,7 +3,7 @@ import { getConnection } from '../database/database.js';
 const getPlatos = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT xpla.stock,xpla.ciudadProv,xpro.nombre,xpro.descripcion,xpro.precio,xpla.image FROM plato xpla, producto xpro WHERE xpla.idProducto = xpro.idProducto");
+        const result = await connection.query("SELECT xpro.idProducto,xpla.stock,xpla.ciudadProv,xpro.nombre,xpro.descripcion,xpro.precio,xpla.image FROM plato xpla, producto xpro WHERE xpla.idProducto = xpro.idProducto");
         console.log(result);
         res.json(result);
     } catch (error) {
@@ -63,9 +63,29 @@ const addPlato = async (req, res) => {
     }
 }
 
+const addStock = async (req, res) => {
+    try {
+        const {idProducto} = req.params;
+        const { stock } = req.body;
+
+        const plato={
+            stock,idProducto
+        }
+
+        const connection = await getConnection();
+        const result=await connection.query("UPDATE plato SET ? WHERE idProducto = ?",[plato, idProducto]);
+        console.log(result);
+        res.json({message:"stock del plato actualizado"});
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
 export const metodos = {
     getPlatos,
     getPlato,
     getIngredientesPlato,
-    addPlato    
+    addPlato,
+    addStock    
 };
