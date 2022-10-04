@@ -171,7 +171,7 @@ const updatePersona=async (req,res)=>{
                     aniosExp
                 }
                 console.log(camarero);
-                const result4=await connection.query("UPDATE camaerero SET ? WHERE ciCamarero = ?",[camarero, ci]);
+                const result4=await connection.query("UPDATE camarero SET ? WHERE ciCamarero = ?",[camarero, ci]);
                 console.log(result4);
                 break;
             default:
