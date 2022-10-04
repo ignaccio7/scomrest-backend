@@ -47,14 +47,20 @@ const addPlato = async (req, res) => {
         const producto={
             nombre,precio,descripcion
         }
+        const result = await connection.query('INSERT INTO producto SET ?',producto);
+        console.log(result);
+
+        const busca = await connection.query('SELECT idProducto FROM producto WHERE nombre LIKE ? AND precio LIKE ? AND descripcion LIKE ?',[nombre,precio,descripcion]);
+
+        const idProducto = busca[0].idProducto;
+
         const plato={
             stock,ciudadProv,idProducto
         }
 
         const connection = await getConnection();
-        const result = await connection.query('INSERT INTO producto SET ?',producto);
         const result2 = await connection.query('INSERT INTO plato SET ?',plato);
-        console.log(result);
+        
         console.log(result2);
         res.json({message:"plato añadido"});
     } catch (error) {
