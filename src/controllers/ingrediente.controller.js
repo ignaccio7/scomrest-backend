@@ -27,10 +27,10 @@ const getIngrediente = async (req, res) => {
 
 const addIngrediente = async (req, res) => {
     try {
-        const { tipo,nombre,idIng } = req.body;
+        const { tipo,nombre } = req.body;
         
         const ingrediente={
-            tipo,nombre,idIng
+            tipo,nombre
         }
 
         const connection = await getConnection();
@@ -49,7 +49,7 @@ const deleteIngrediente=async (req,res)=>{
         const connection = await getConnection();
         const result=await connection.query("DELETE FROM ingrediente WHERE idIng=?",idIng);
         console.log(result);
-        res.json(result);
+        res.json({message:"Ingrediente eliminado"});
     } catch (error) {
         res.status(500); //error de lado del servidor
         res.send(error.message);

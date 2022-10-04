@@ -42,10 +42,10 @@ const getIngredientesPlato = async (req,res)=>{
 
 const addPlato = async (req, res) => {
     try {
-        const { nombre,precio,descripcion,stock,ciudadProv,idProducto } = req.body;
+        const { nombre,precio,descripcion,stock,ciudadProv } = req.body;
 
         const producto={
-            nombre,precio,descripcion,idProducto
+            nombre,precio,descripcion
         }
         const plato={
             stock,ciudadProv,idProducto
