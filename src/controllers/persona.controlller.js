@@ -151,6 +151,7 @@ const updatePersona=async (req,res)=>{
                     aniosExp,
                     institucion
                 }
+                console.log(chef);
                 const result2=await connection.query("UPDATE chef SET ? WHERE ciChef = ?",[chef, ci]);
                 console.log(result2);
                 break;
@@ -160,6 +161,7 @@ const updatePersona=async (req,res)=>{
                     profesion,
                     institucion
                 }
+                console.log(cajero);
                 const result3=await connection.query("UPDATE cajero SET ? WHERE ciCajero = ?",[cajero, ci]);
                 console.log(result3);
                 break;
@@ -168,6 +170,7 @@ const updatePersona=async (req,res)=>{
                     ciCamarero:ci,
                     aniosExp
                 }
+                console.log(camarero);
                 const result4=await connection.query("UPDATE camaerero SET ? WHERE ciCamarero = ?",[camarero, ci]);
                 console.log(result4);
                 break;

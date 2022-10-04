@@ -69,6 +69,29 @@ const deleteBebida=async (req,res)=>{
     }    
 };
 
+const updateBebida = async (req, res) => {
+    try {
+        const { nombre,precio,descripcion,marca,tipo,grado_alcoholico,idProducto } = req.body;
+
+        const producto={
+            nombre,precio,descripcion,idProducto
+        }
+        const bebida={
+            marca,tipo,grado_alcoholico,idProducto
+        }
+        //const result=await connection.query("UPDATE usuario SET ? WHERE ci = ?",[usuario, ci]);
+        const connection = await getConnection();
+        const result = await connection.query('UPDATE producto SET ? WHERE idProducto=?',[producto,idProducto]);
+        const result2 = await connection.query('UPDATE plato SET ? WHERE idProducto=?',[plato,idProducto]);
+        console.log(result);
+        console.log(result2);
+        res.json({message:"plato actualizado"});
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
 export const metodos = {
     getBebidas, 
 };
