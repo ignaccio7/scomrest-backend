@@ -7,6 +7,7 @@ router.get('/',ingredienteController.getIngredientes);
 router.get('/:idIng',ingredienteController.getIngrediente);
 router.post('/',ingredienteController.addIngrediente);
 router.delete('/:idIng',ingredienteController.deleteIngrediente);
+router.put('/',ingredienteController.updateIngrediente);
 
 
 export default router;

@@ -56,10 +56,30 @@ const deleteIngrediente=async (req,res)=>{
     }    
 };
 
+const updateIngrediente=async (req,res)=>{
+    //res.json("hola:mundo");
+    try {
+        const { tipo,nombre,idIng } = req.body;
+        
+        const ingrediente={
+            tipo,nombre,idIng
+        }
+
+        const connection=await getConnection();
+        const result=await connection.query("UPDATE ingrediente SET ? WHERE idIng = ?",[ingrediente, idIng]);
+        console.log(result);
+
+        res.json({message:"Ingrediente modificado"});
+    } catch (error) {
+        res.status(500); //error de lado del servidor
+        res.send(error.message);
+    }    
+};
+
 export const metodos = {
     getIngredientes,
     getIngrediente,
     addIngrediente,
-    deleteIngrediente
-    
+    deleteIngrediente,
+    updateIngrediente
 };

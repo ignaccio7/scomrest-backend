@@ -6,6 +6,7 @@ import personaRouter from './routes/persona.routes';
 import platoRouter from './routes/plato.routes';
 import ingredienteRouter from './routes/ingrediente.router';
 import pedidoRouter from './routes/pedido.routes';
+import bebidaRouter from './routes/bebida.routes';
 
 const cors = require('cors');
 
@@ -30,6 +31,7 @@ app.use('/api/persona/',personaRouter);
 app.use('/api/plato/',platoRouter);
 app.use('/api/ingrediente/',ingredienteRouter);
 app.use('/api/pedido/',pedidoRouter);
+app.use('/api/bebida/',bebidaRouter);
 
 app.get('/',(req,res)=>{
     res.json({
