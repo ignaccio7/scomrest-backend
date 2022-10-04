@@ -3,7 +3,7 @@ import { getConnection } from '../database/database.js';
 const getIngredientes = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT tipo,nombre FROM ingrediente");
+        const result = await connection.query("SELECT idIng,tipo,nombre FROM ingrediente");
         console.log(result);
         res.json(result);
     } catch (error) {
@@ -16,7 +16,7 @@ const getIngrediente = async (req, res) => {
     try {
         const { idIng } = req.params;
         const connection = await getConnection();
-        const result = await connection.query("SELECT tipo,nombre FROM ingrediente WHERE idIng=?",idIng);
+        const result = await connection.query("SELECT idIng,tipo,nombre FROM ingrediente WHERE idIng=?",idIng);
         console.log(result);
         res.json(result);
     } catch (error) {
