@@ -82,10 +82,10 @@ const updateBebida = async (req, res) => {
         //const result=await connection.query("UPDATE usuario SET ? WHERE ci = ?",[usuario, ci]);
         const connection = await getConnection();
         const result = await connection.query('UPDATE producto SET ? WHERE idProducto=?',[producto,idProducto]);
-        const result2 = await connection.query('UPDATE plato SET ? WHERE idProducto=?',[plato,idProducto]);
+        const result2 = await connection.query('UPDATE bebida SET ? WHERE idProducto=?',[bebida,idProducto]);
         console.log(result);
         console.log(result2);
-        res.json({message:"plato actualizado"});
+        res.json({message:"bebida actualizada"});
     } catch (error) {
         res.status(500);//error de lado del servidor
         res.send(error.message);
@@ -93,5 +93,9 @@ const updateBebida = async (req, res) => {
 }
 
 export const metodos = {
-    getBebidas, 
+    getBebidas,
+    getBebida,
+    addBebida,
+    deleteBebida,
+    updateBebida 
 };

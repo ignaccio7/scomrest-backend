@@ -4,14 +4,11 @@ import { metodos as bebidaControllers } from '../controllers/bebida.controller.j
 const router = Router();
 
 router.get('/',bebidaControllers.getBebidas);
-/*router.get('/:idProducto',platoControllers.getPlato);
-router.get('/ingredientes/:idProducto',platoControllers.getIngredientesPlato);
-router.post('/',platoControllers.addPlato);
-//para actualizar el stock
-router.put('/:idProducto',platoControllers.addStock);
+router.get('/:idProducto',bebidaControllers.getBebida);
+router.post('/',bebidaControllers.addBebida);
 //para eliminar el plato
-router.delete('/:idProducto',platoControllers.deletePlato);
+router.delete('/:idProducto',bebidaControllers.deleteBebida);
 //para actualizar el plato
-router.put('/',platoControllers.updatePlato);*/
+router.put('/',bebidaControllers.updateBebida);
 
 export default router;
