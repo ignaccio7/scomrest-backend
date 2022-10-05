@@ -7,6 +7,7 @@ import platoRouter from './routes/plato.routes';
 import ingredienteRouter from './routes/ingrediente.router';
 import pedidoRouter from './routes/pedido.routes';
 import bebidaRouter from './routes/bebida.routes';
+import mesaRouter from './routes/mesa.routes';
 
 const cors = require('cors');
 
@@ -32,6 +33,7 @@ app.use('/api/plato/',platoRouter);
 app.use('/api/ingrediente/',ingredienteRouter);
 app.use('/api/pedido/',pedidoRouter);
 app.use('/api/bebida/',bebidaRouter);
+app.use('/api/mesa/',mesaRouter);
 
 app.get('/',(req,res)=>{
     res.json({

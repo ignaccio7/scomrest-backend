@@ -45,9 +45,23 @@ const enablePedido = async (req, res) => {
     }
 }
 
+const addPedido = async (req,res)=>{
+    try {
+        const {fecha,idMesa,products} = req.body;
+        console.log("Datos para registro del pedido");
+        console.log(fecha);
+        console.log(idMesa);
+        console.log(products);
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
 
 export const metodos = {
     getPedidos,
     getproductosPedido,
-    enablePedido
+    enablePedido,
+    addPedido
 };

@@ -8,5 +8,7 @@ router.get('/',pedidoController.getPedidos);
 router.get('/productos/:nroPedido',pedidoController.getproductosPedido);
 //para habilitar el pedido
 router.put('/enabled/:nroPedido',pedidoController.enablePedido);
+//para llenar datos en el pedido
+router.post('/',pedidoController.addPedido);
 
 export default router;

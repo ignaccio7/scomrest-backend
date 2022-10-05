@@ -4,6 +4,9 @@ import { metodos as platoControllers } from '../controllers/plato.controller.js'
 const router = Router();
 
 router.get('/',platoControllers.getPlatos);
+//obtener platos con stock mayor a 0
+router.get('/pedido/',platoControllers.getPlatosPedido);
+
 router.get('/:idProducto',platoControllers.getPlato);
 router.get('/ingredientes/:idProducto',platoControllers.getIngredientesPlato);
 router.post('/',platoControllers.addPlato);

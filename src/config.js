@@ -6,6 +6,6 @@ export default {
     host : "localhost",
     database : "dbscomrest",
     user : 'root',
-    password : '',
+    password : '260298',
     SECRET:'scomrestGrupo8',
 };
