@@ -4,7 +4,19 @@ const getPedidos = async (req, res) => {
     try {
         const connection = await getConnection();
         //const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas,xche.institucion,xusu.nombre,xusu.appaterno FROM pedido xped, mesa xmes, chef xche,usuario xusu WHERE xped.idMesa = xmes.idMesa AND xped.cichef = xche.cichef AND xusu.ci = xche.cichef");
-        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa");
+        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '0'");
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
+const getPedidosHabilitados = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '1'");
         console.log(result);
         res.json(result);
     } catch (error) {
@@ -94,6 +106,7 @@ const addPedido = async (req,res)=>{
 
 export const metodos = {
     getPedidos,
+    getPedidosHabilitados,
     getproductosPedido,
     enablePedido,
     addPedido
