@@ -3,7 +3,8 @@ import { getConnection } from '../database/database.js';
 const getPedidos = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas,xche.institucion,xusu.nombre,xusu.appaterno FROM pedido xped, mesa xmes, chef xche,usuario xusu WHERE xped.idMesa = xmes.idMesa AND xped.cichef = xche.cichef AND xusu.ci = xche.cichef");
+        //const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas,xche.institucion,xusu.nombre,xusu.appaterno FROM pedido xped, mesa xmes, chef xche,usuario xusu WHERE xped.idMesa = xmes.idMesa AND xped.cichef = xche.cichef AND xusu.ci = xche.cichef");
+        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa");
         console.log(result);
         res.json(result);
     } catch (error) {
@@ -47,28 +48,42 @@ const enablePedido = async (req, res) => {
 
 const addPedido = async (req,res)=>{
     try {
+        const connection = await getConnection();
         const {fecha,idMesa,products,hora} = req.body;
         console.log("Datos para registro del pedido");
         console.log(fecha);
         console.log(idMesa);
         console.log(hora);
-        products.forEach(element => {
-            console.log(element.idProducto,element.cantidad); 
-        });
 
         const pedido={
-            fecha,idMesa
+            fecha,hora,idMesa,habilitado:0
         }  
-        /*
-        const result = await connection.query('INSERT INTO pedido SET ?',pedido);
 
+        const result = await connection.query('INSERT INTO pedido SET ?',pedido);
+        console.log(result);
+
+        const busca = await connection.query('SELECT nroPedido FROM pedido WHERE fecha LIKE ? AND hora LIKE ? AND idMesa LIKE ?',[fecha,hora,idMesa]);
+
+        let nroPedido = busca[0].nroPedido;
+        console.log(nroPedido);
+        /*products.forEach(element => {
+            console.log(element.idProducto,element.cantidad); 
+        });*/
+        let pay = {
+            idProducto:"",
+            nroPedido:"",
+            cantidad:""            
+        }                
         let result2;
         products.forEach(async element => {
-            result2 = await connection.query('INSERT INTO adquiere SET ?',);
+            pay.idProducto=element.idProducto;
+            pay.cantidad=element.cantidad;
+            pay.nroPedido=nroPedido;
+            console.log(pay);
+            result2 = await connection.query('INSERT INTO adquiere SET ?',pay);
+            console.log(result2);
         });
-
-        const connection = await getConnection();
-        */
+        res.json({message:"pedido añadido"});
         
     } catch (error) {
         res.status(500);//error de lado del servidor
