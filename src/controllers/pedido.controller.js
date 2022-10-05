@@ -47,11 +47,29 @@ const enablePedido = async (req, res) => {
 
 const addPedido = async (req,res)=>{
     try {
-        const {fecha,idMesa,products} = req.body;
+        const {fecha,idMesa,products,hora} = req.body;
         console.log("Datos para registro del pedido");
         console.log(fecha);
         console.log(idMesa);
-        console.log(products);
+        console.log(hora);
+        products.forEach(element => {
+            console.log(element.idProducto,element.cantidad); 
+        });
+
+        const pedido={
+            fecha,idMesa
+        }  
+        /*
+        const result = await connection.query('INSERT INTO pedido SET ?',pedido);
+
+        let result2;
+        products.forEach(async element => {
+            result2 = await connection.query('INSERT INTO adquiere SET ?',);
+        });
+
+        const connection = await getConnection();
+        */
+        
     } catch (error) {
         res.status(500);//error de lado del servidor
         res.send(error.message);
