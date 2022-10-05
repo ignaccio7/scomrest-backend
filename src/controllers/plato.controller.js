@@ -107,13 +107,13 @@ const deletePlato=async (req,res)=>{
 
 const updatePlato = async (req, res) => {
     try {
-        const { nombre,precio,descripcion,stock,ciudadProv,idProducto } = req.body;
+        const { nombre,precio,descripcion,stock,ciudadProv,idProducto,image } = req.body;
 
         const producto={
             nombre,precio,descripcion,idProducto
         }
         const plato={
-            stock,ciudadProv,idProducto
+            stock,ciudadProv,idProducto,image
         }
         //const result=await connection.query("UPDATE usuario SET ? WHERE ci = ?",[usuario, ci]);
         const connection = await getConnection();
