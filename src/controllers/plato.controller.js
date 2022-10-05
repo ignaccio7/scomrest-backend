@@ -42,23 +42,26 @@ const getIngredientesPlato = async (req,res)=>{
 
 const addPlato = async (req, res) => {
     try {
-        const { nombre,precio,descripcion,stock,ciudadProv } = req.body;
+        const connection = await getConnection();
 
+        const { nombre,precio,descripcion,stock,ciudadProv,image } = req.body;
+        console.log(nombre,precio,descripcion,stock,ciudadProv);
+        let idProducto="";
         const producto={
-            nombre,precio,descripcion
+            precio,descripcion,nombre
         }
         const result = await connection.query('INSERT INTO producto SET ?',producto);
         console.log(result);
 
+        console.log("inserto producto");
+
         const busca = await connection.query('SELECT idProducto FROM producto WHERE nombre LIKE ? AND precio LIKE ? AND descripcion LIKE ?',[nombre,precio,descripcion]);
 
-        const idProducto = busca[0].idProducto;
+        idProducto = busca[0].idProducto;
 
         const plato={
-            stock,ciudadProv,idProducto
+            stock,ciudadProv,idProducto,image
         }
-
-        const connection = await getConnection();
         const result2 = await connection.query('INSERT INTO plato SET ?',plato);
         
         console.log(result2);
