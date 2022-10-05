@@ -17,7 +17,7 @@ const getPlato = async (req, res) => {
         const { idProducto } = req.params;
 
         const connection = await getConnection();
-        const result = await connection.query("SELECT xpla.stock,xpla.ciudadProv,xpro.nombre,xpro.descripcion,xpro.precio FROM plato xpla, producto xpro WHERE xpla.idProducto = xpro.idProducto and xpla.idProducto=?", idProducto);
+        const result = await connection.query("SELECT xpla.stock,xpla.ciudadProv,xpro.nombre,xpro.descripcion,xpro.precio,xpla.image FROM plato xpla, producto xpro WHERE xpla.idProducto = xpro.idProducto and xpla.idProducto=?", idProducto);
         console.log(result);
         res.json(result);
     } catch (error) {
