@@ -8,6 +8,7 @@ import ingredienteRouter from './routes/ingrediente.router';
 import pedidoRouter from './routes/pedido.routes';
 import bebidaRouter from './routes/bebida.routes';
 import mesaRouter from './routes/mesa.routes';
+import facturaRouter from './routes/factura.routes';
 
 const cors = require('cors');
 
@@ -34,6 +35,7 @@ app.use('/api/ingrediente/',ingredienteRouter);
 app.use('/api/pedido/',pedidoRouter);
 app.use('/api/bebida/',bebidaRouter);
 app.use('/api/mesa/',mesaRouter);
+app.use('/api/factura/',facturaRouter);
 
 app.get('/',(req,res)=>{
     res.json({
