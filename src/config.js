@@ -3,9 +3,11 @@ import { config } from "dotenv";
 config();
 
 export default {    
-    host : "localhost",
-    database : "dbscomrest",
-    user : 'root',
-    password : '260298',
+    port : process.env.PORT || 4000,
+    host : process.env.HOST || "localhost",
+    database : process.env.DB_NAME || "dbscomrest",
+    user : process.env.DB_USER || 'root',
+    password : process.env.DB_PASSWORD || '260298',
+    db_port : process.env.DB_PORT || '3306',
     SECRET:'scomrestGrupo8',
 };

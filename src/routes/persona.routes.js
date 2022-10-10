@@ -14,4 +14,7 @@ router.delete('/:ci',personaController.deletePersona);
 
 router.post('/login/',personaController.loginUsuario);
 
+//para añadir un usuario cliente
+router.post('/client/',personaController.addClient);
+
 export default router;

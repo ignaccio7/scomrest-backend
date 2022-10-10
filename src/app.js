@@ -9,6 +9,9 @@ import pedidoRouter from './routes/pedido.routes';
 import bebidaRouter from './routes/bebida.routes';
 import mesaRouter from './routes/mesa.routes';
 import facturaRouter from './routes/factura.routes';
+import config from "./config.js";
+
+console.log(config.port);
 
 const cors = require('cors');
 
@@ -19,7 +22,7 @@ app.use(cors());
 
 app.set('pkg',pkg);
 
-app.set('port',4000);
+app.set('port',config.port);
 
 //Middlewares   son intermedios entre una peticion y una respuesta
 app.use(morgan("dev")); //en la parte de la consola tendremos un listado de las peticiones

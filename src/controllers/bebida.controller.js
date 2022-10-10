@@ -28,7 +28,7 @@ const getBebida = async (req, res) => {
 
 const addBebida = async (req, res) => {
     try {
-        const { nombre,precio,descripcion,marca,tipo,grado_alcoholico } = req.body;
+        const { nombre,precio,descripcion,marca,tipo,grado_alcoholico,image } = req.body;
 
         const producto={
             nombre,precio,descripcion
@@ -41,7 +41,7 @@ const addBebida = async (req, res) => {
         const idProducto = busca[0].idProducto;
 
         const bebida={
-            marca,tipo,grado_alcoholico,idProducto
+            marca,tipo,grado_alcoholico,idProducto,image
         }
 
         const connection = await getConnection();
