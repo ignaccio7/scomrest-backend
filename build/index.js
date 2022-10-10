@@ -1,10 +1,10 @@
 "use strict";
 
-var _express = _interopRequireDefault(require("express"));
+var _app = _interopRequireDefault(require("./app"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var app = (0, _express["default"])(); //para que se mantenga ejecutando
+//para que se mantenga ejecutando
+_app["default"].listen(_app["default"].get("port"));
 
-app.listen(3000);
-console.log("Server in port ", 3000);
+console.log("Servidor en puerto : ".concat(_app["default"].get("port")));
