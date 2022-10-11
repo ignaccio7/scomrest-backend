@@ -4,9 +4,8 @@
   "description": "Proyecto para restaurante culinario",
   "main": "index.js",
   "scripts": {
-    "build": "babel src --out-dir build",
     "dev": "nodemon src/index.js --exec babel-node",
-    "start": "node build/app.js"
+    "start": "node build/index.js"
   },
   "keywords": [],
   "author": "Grupo8",
