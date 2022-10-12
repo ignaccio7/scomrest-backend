@@ -237,8 +237,8 @@ const asignaRol = async (req, res) => {
             case 'chef':
                 const chef = {
                     ciChef: ci,
-                    aniosExp:'',
-                    institucion:''
+                    aniosExp:'1',
+                    institucion:'a'
                 }
                 console.log(chef);
                 const result2 = await connection.query("INSERT INTO chef SET ?", chef);
@@ -247,8 +247,8 @@ const asignaRol = async (req, res) => {
             case 'cajero':
                 const cajero = {
                     ciCajero: ci,
-                    profesion:'',
-                    institucion:''
+                    profesion:'a',
+                    institucion:'a'
                 }
                 console.log(cajero);
                 const result3 = await connection.query("INSERT INTO cajero SET ?", cajero);
@@ -257,7 +257,7 @@ const asignaRol = async (req, res) => {
             case 'camarero':
                 const camarero = {
                     ciCamarero: ci,
-                    aniosExp:''
+                    aniosExp:'1'
                 }
                 console.log(camarero);
                 const result4 = await connection.query("INSERT INTO camarero SET ?", camarero);
