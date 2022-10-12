@@ -14,6 +14,18 @@ const getPersonas = async (req, res) => {
     }
 }
 
+const getPersonasClient = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const result = await connection.query("SELECT xusu.* FROM usuario xusu,cliente xcli WHERE xcli.ciCliente=xusu.ci");
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
 const getPersona = async (req, res) => {
     try {
         const { ci } = req.params;
@@ -274,7 +286,10 @@ const loginUsuario = async (req, res) => {
                 expiresIn: 86400 //24h
             })
             console.log(result);
-            res.json({ token });
+
+            const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
+
+            res.json({ token,tipo:result2[0].tipo,username,ci });
         } else {
             console.log(result);
             res.status(400).json({ message: "Credenciales Incorrectas" });
@@ -293,5 +308,6 @@ export const metodos = {
     updatePersona,
     loginUsuario,
     addClient,
-    asignaRol
+    asignaRol,
+    getPersonasClient
 };

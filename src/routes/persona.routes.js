@@ -20,4 +20,7 @@ router.post('/client/',personaController.addClient);
 //para asignar un rol al cliente
 router.post('/asignaRol/',personaController.asignaRol);
 
+//para listar los clientes
+router.get('/clientes/',personaController.getPersonasClient);
+
 export default router;

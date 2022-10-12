@@ -71,13 +71,13 @@ const deleteBebida=async (req,res)=>{
 
 const updateBebida = async (req, res) => {
     try {
-        const { nombre,precio,descripcion,marca,tipo,grado_alcoholico,idProducto } = req.body;
+        const { nombre,precio,descripcion,marca,tipo,grado_alcoholico,idProducto,image } = req.body;
 
         const producto={
             nombre,precio,descripcion,idProducto
         }
         const bebida={
-            marca,tipo,grado_alcoholico,idProducto
+            marca,tipo,grado_alcoholico,idProducto,image
         }
         //const result=await connection.query("UPDATE usuario SET ? WHERE ci = ?",[usuario, ci]);
         const connection = await getConnection();
