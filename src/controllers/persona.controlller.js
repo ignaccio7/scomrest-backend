@@ -214,6 +214,52 @@ const updatePersona = async (req, res) => {
     }
 };
 
+const asignaRol = async (req, res) => {
+    try {
+        const { ci,selectTipo } = req.body;
+
+        switch (selectTipo) {
+            case 'chef':
+                const chef = {
+                    ciChef: ci,
+                    aniosExp:'',
+                    institucion:''
+                }
+                console.log(chef);
+                const result2 = await connection.query("INSERT INTO chef SET ?", chef);
+                console.log(result2);
+                break;
+            case 'cajero':
+                const cajero = {
+                    ciCajero: ci,
+                    profesion:'',
+                    institucion:''
+                }
+                console.log(cajero);
+                const result3 = await connection.query("INSERT INTO cajero SET ?", cajero);
+                console.log(result3);
+                break;
+            case 'camarero':
+                const camarero = {
+                    ciCamarero: ci,
+                    aniosExp:''
+                }
+                console.log(camarero);
+                const result4 = await connection.query("INSERT INTO camarero SET ?", camarero);
+                console.log(result4);
+                break;
+            default:
+                break;
+        }
+
+
+        res.json({ message: "rol asignado" });
+    } catch (error) {
+        res.status(500); //error de lado del servidor
+        res.send(error.message);
+    }
+};
+
 const loginUsuario = async (req, res) => {
     try {
         const { username, password } = req.body;
@@ -246,5 +292,6 @@ export const metodos = {
     deletePersona,
     updatePersona,
     loginUsuario,
-    addClient
+    addClient,
+    asignaRol
 };

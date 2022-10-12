@@ -17,4 +17,7 @@ router.post('/login/',personaController.loginUsuario);
 //para añadir un usuario cliente
 router.post('/client/',personaController.addClient);
 
+//para asignar un rol al cliente
+router.post('/asignaRol/',personaController.asignaRol);
+
 export default router;
