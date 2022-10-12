@@ -230,6 +230,9 @@ const asignaRol = async (req, res) => {
     try {
         const { ci,selectTipo } = req.body;
 
+        const result4 = await connection.query("DELETE FROM cliente WHERE ciCliente=?", ci);
+        console.log(result4);
+
         switch (selectTipo) {
             case 'chef':
                 const chef = {
