@@ -296,21 +296,21 @@ const loginUsuario = async (req, res) => {
             //const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
             const resultCliente = await connection.query("SELECT ciCliente FROM cliente");
             resultCliente.forEach(element => {
-                if (element.ciCliente ==ci) {
+                if (element[0].ciCliente ==ci) {
                     tipo="cliente";
                 }
             });
 
             const resultChef = await connection.query("SELECT ciChef FROM chef");
             resultChef.forEach(element => {
-                if (element.ciChef ==ci) {
+                if (element[0].ciChef ==ci) {
                     tipo="chef";
                 }
             });
 
             const resultCamarero = await connection.query("SELECT ciCliente FROM camarero");
             resultCamarero.forEach(element => {
-                if (element.ciCamarero ==ci) {
+                if (element[0].ciCamarero ==ci) {
                     tipo="camarero";
                 }
             });

@@ -679,7 +679,7 @@ var loginUsuario = /*#__PURE__*/function () {
           case 16:
             resultCliente = _context9.sent;
             resultCliente.forEach(function (element) {
-              if (element.ciCliente == ci) {
+              if (element[0].ciCliente == ci) {
                 tipo = "cliente";
               }
             });
@@ -689,7 +689,7 @@ var loginUsuario = /*#__PURE__*/function () {
           case 20:
             resultChef = _context9.sent;
             resultChef.forEach(function (element) {
-              if (element.ciChef == ci) {
+              if (element[0].ciChef == ci) {
                 tipo = "chef";
               }
             });
@@ -699,7 +699,7 @@ var loginUsuario = /*#__PURE__*/function () {
           case 24:
             resultCamarero = _context9.sent;
             resultCamarero.forEach(function (element) {
-              if (element.ciCamarero == ci) {
+              if (element[0].ciCamarero == ci) {
                 tipo = "camarero";
               }
             });
