@@ -287,6 +287,7 @@ const loginUsuario = async (req, res) => {
         if (result.length > 0) {
 
             const ci = result[0].ci;
+            console.log("el ci es :",ci);
             //para el token
             const token = jwt.sign({ ci }, config.SECRET, {
                 expiresIn: 86400 //24h
@@ -298,6 +299,7 @@ const loginUsuario = async (req, res) => {
             console.log(resultCliente);
             resultCliente.forEach(element => {
                 if (element[0].ciCliente ==ci) {
+                    console.log("codigo de cliente:",element[0].ciCliente);
                     tipo="cliente";
                 }
             });
