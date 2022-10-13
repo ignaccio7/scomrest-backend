@@ -681,8 +681,9 @@ var loginUsuario = /*#__PURE__*/function () {
             resultCliente = _context9.sent;
             console.log(resultCliente);
             resultCliente.forEach(function (element) {
+              console.log("codigo de cliente:", element[0].ciCliente);
+
               if (element[0].ciCliente === ci) {
-                console.log("codigo de cliente:", element[0].ciCliente);
                 tipo = "cliente";
               }
             });

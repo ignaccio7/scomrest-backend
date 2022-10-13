@@ -298,8 +298,8 @@ const loginUsuario = async (req, res) => {
             const resultCliente = await connection.query("SELECT ciCliente FROM cliente");
             console.log(resultCliente);
             resultCliente.forEach(element => {
+                console.log("codigo de cliente:",element[0].ciCliente);
                 if (element[0].ciCliente ===ci) {
-                    console.log("codigo de cliente:",element[0].ciCliente);
                     tipo="cliente";
                 }
             });
