@@ -64,68 +64,110 @@ var getPersonas = /*#__PURE__*/function () {
   };
 }();
 
-var getPersona = /*#__PURE__*/function () {
+var getClientes = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var ci, connection, result, result2, institucion, aniosExp, profesion, result3, result4, result5;
+    var connection, result;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.prev = 0;
+            _context2.next = 3;
+            return (0, _database.getConnection)();
+
+          case 3:
+            connection = _context2.sent;
+            _context2.next = 6;
+            return connection.query("SELECT xusu.* FROM usuario xusu,cliente xcli WHERE xcli.ciCliente=xusu.ci");
+
+          case 6:
+            result = _context2.sent;
+            console.log(result);
+            res.json(result);
+            _context2.next = 15;
+            break;
+
+          case 11:
+            _context2.prev = 11;
+            _context2.t0 = _context2["catch"](0);
+            res.status(500);
+            res.send(_context2.t0.message);
+
+          case 15:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[0, 11]]);
+  }));
+
+  return function getClientes(_x3, _x4) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+var getPersona = /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
+    var ci, connection, result, result2, institucion, aniosExp, profesion, result3, result4, result5;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.prev = 0;
             ci = req.params.ci;
-            _context2.next = 4;
+            _context3.next = 4;
             return (0, _database.getConnection)();
 
           case 4:
-            connection = _context2.sent;
-            _context2.next = 7;
+            connection = _context3.sent;
+            _context3.next = 7;
             return connection.query("SELECT * FROM usuario WHERE ci=? LIMIT 1", ci);
 
           case 7:
-            result = _context2.sent;
-            _context2.next = 10;
+            result = _context3.sent;
+            _context3.next = 10;
             return connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
 
           case 10:
-            result2 = _context2.sent;
+            result2 = _context3.sent;
             institucion = "";
             aniosExp = "";
             profesion = "";
-            _context2.t0 = result2[0].tipo;
-            _context2.next = _context2.t0 === 'chef' ? 17 : _context2.t0 === 'camarero' ? 23 : _context2.t0 === 'cajero' ? 28 : 34;
+            _context3.t0 = result2[0].tipo;
+            _context3.next = _context3.t0 === 'chef' ? 17 : _context3.t0 === 'camarero' ? 23 : _context3.t0 === 'cajero' ? 28 : 34;
             break;
 
           case 17:
-            _context2.next = 19;
+            _context3.next = 19;
             return connection.query("SELECT xch.institucion,xch.aniosexp FROM chef xch, usuario xusu WHERE xch.cichef = xusu.ci AND xch.ciChef = ?", ci);
 
           case 19:
-            result3 = _context2.sent;
+            result3 = _context3.sent;
             institucion = result3[0].institucion;
             aniosExp = result3[0].aniosexp;
-            return _context2.abrupt("break", 35);
+            return _context3.abrupt("break", 35);
 
           case 23:
-            _context2.next = 25;
+            _context3.next = 25;
             return connection.query("SELECT xch.aniosexp FROM camarero xch, usuario xusu WHERE xch.ciCamarero = xusu.ci AND xch.ciCamarero = ?", ci);
 
           case 25:
-            result4 = _context2.sent;
+            result4 = _context3.sent;
             aniosExp = result4[0].aniosexp;
-            return _context2.abrupt("break", 35);
+            return _context3.abrupt("break", 35);
 
           case 28:
-            _context2.next = 30;
+            _context3.next = 30;
             return connection.query("SELECT xch.institucion,xch.profesion FROM cajero xch, usuario xusu WHERE xch.ciCajero = xusu.ci AND xch.ciCajero = ?", ci);
 
           case 30:
-            result5 = _context2.sent;
+            result5 = _context3.sent;
             profesion = result5[0].profesion;
             institucion = result5[0].institucion;
-            return _context2.abrupt("break", 35);
+            return _context3.abrupt("break", 35);
 
           case 34:
-            return _context2.abrupt("break", 35);
+            return _context3.abrupt("break", 35);
 
           case 35:
             console.log(result);
@@ -143,38 +185,38 @@ var getPersona = /*#__PURE__*/function () {
               profesion: profesion,
               tipo: result2[0].tipo
             });
-            _context2.next = 44;
+            _context3.next = 44;
             break;
 
           case 40:
-            _context2.prev = 40;
-            _context2.t1 = _context2["catch"](0);
+            _context3.prev = 40;
+            _context3.t1 = _context3["catch"](0);
             res.status(500); //error de lado del servidor
 
-            res.send(_context2.t1.message);
+            res.send(_context3.t1.message);
 
           case 44:
           case "end":
-            return _context2.stop();
+            return _context3.stop();
         }
       }
-    }, _callee2, null, [[0, 40]]);
+    }, _callee3, null, [[0, 40]]);
   }));
 
-  return function getPersona(_x3, _x4) {
-    return _ref2.apply(this, arguments);
+  return function getPersona(_x5, _x6) {
+    return _ref3.apply(this, arguments);
   };
 }();
 
 var addClient = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
     var _req$body, ci, nombre, apPaterno, apMaterno, turno, username, password, usuario, connection, result, cliente, result2;
 
-    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
-            _context3.prev = 0;
+            _context4.prev = 0;
             _req$body = req.body, ci = _req$body.ci, nombre = _req$body.nombre, apPaterno = _req$body.apPaterno, apMaterno = _req$body.apMaterno, turno = _req$body.turno, username = _req$body.username, password = _req$body.password;
             usuario = {
               ci: ci,
@@ -185,62 +227,62 @@ var addClient = /*#__PURE__*/function () {
               username: username,
               password: password
             };
-            _context3.next = 5;
+            _context4.next = 5;
             return (0, _database.getConnection)();
 
           case 5:
-            connection = _context3.sent;
-            _context3.next = 8;
+            connection = _context4.sent;
+            _context4.next = 8;
             return connection.query('INSERT INTO usuario SET ?', usuario);
 
           case 8:
-            result = _context3.sent;
+            result = _context4.sent;
             console.log(result);
             cliente = {
               ciCliente: ci,
               razonSocial: apPaterno
             };
-            _context3.next = 13;
+            _context4.next = 13;
             return connection.query('INSERT INTO cliente SET ?', cliente);
 
           case 13:
-            result2 = _context3.sent;
+            result2 = _context4.sent;
             console.log(result2);
             res.json({
               message: "usuario añadido"
             });
-            _context3.next = 22;
+            _context4.next = 22;
             break;
 
           case 18:
-            _context3.prev = 18;
-            _context3.t0 = _context3["catch"](0);
+            _context4.prev = 18;
+            _context4.t0 = _context4["catch"](0);
             res.status(500); //error de lado del servidor
 
-            res.send(_context3.t0.message);
+            res.send(_context4.t0.message);
 
           case 22:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
-    }, _callee3, null, [[0, 18]]);
+    }, _callee4, null, [[0, 18]]);
   }));
 
-  return function addClient(_x5, _x6) {
-    return _ref3.apply(this, arguments);
+  return function addClient(_x7, _x8) {
+    return _ref4.apply(this, arguments);
   };
 }();
 
 var addPersona = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
     var _req$body2, ci, nombre, apPaterno, apMaterno, turno, username, password, aniosExp, institucion, profesion, selectTipo, usuario, connection, result, chef, result2, cajero, result3, camarero, result4;
 
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            _context4.prev = 0;
+            _context5.prev = 0;
             _req$body2 = req.body, ci = _req$body2.ci, nombre = _req$body2.nombre, apPaterno = _req$body2.apPaterno, apMaterno = _req$body2.apMaterno, turno = _req$body2.turno, username = _req$body2.username, password = _req$body2.password, aniosExp = _req$body2.aniosExp, institucion = _req$body2.institucion, profesion = _req$body2.profesion, selectTipo = _req$body2.selectTipo;
             console.log(ci, nombre, apPaterno, apMaterno, turno, username, password);
             usuario = {
@@ -252,19 +294,19 @@ var addPersona = /*#__PURE__*/function () {
               username: username,
               password: password
             };
-            _context4.next = 6;
+            _context5.next = 6;
             return (0, _database.getConnection)();
 
           case 6:
-            connection = _context4.sent;
-            _context4.next = 9;
+            connection = _context5.sent;
+            _context5.next = 9;
             return connection.query('INSERT INTO usuario SET ?', usuario);
 
           case 9:
-            result = _context4.sent;
+            result = _context5.sent;
             console.log(result);
-            _context4.t0 = selectTipo;
-            _context4.next = _context4.t0 === 'chef' ? 14 : _context4.t0 === 'cajero' ? 20 : _context4.t0 === 'camarero' ? 26 : 32;
+            _context5.t0 = selectTipo;
+            _context5.next = _context5.t0 === 'chef' ? 14 : _context5.t0 === 'cajero' ? 20 : _context5.t0 === 'camarero' ? 26 : 32;
             break;
 
           case 14:
@@ -273,13 +315,13 @@ var addPersona = /*#__PURE__*/function () {
               aniosExp: aniosExp,
               institucion: institucion
             };
-            _context4.next = 17;
+            _context5.next = 17;
             return connection.query('INSERT INTO chef SET ?', chef);
 
           case 17:
-            result2 = _context4.sent;
+            result2 = _context5.sent;
             console.log(result2);
-            return _context4.abrupt("break", 33);
+            return _context5.abrupt("break", 33);
 
           case 20:
             cajero = {
@@ -287,111 +329,111 @@ var addPersona = /*#__PURE__*/function () {
               profesion: profesion,
               institucion: institucion
             };
-            _context4.next = 23;
+            _context5.next = 23;
             return connection.query('INSERT INTO cajero SET ?', cajero);
 
           case 23:
-            result3 = _context4.sent;
+            result3 = _context5.sent;
             console.log(result3);
-            return _context4.abrupt("break", 33);
+            return _context5.abrupt("break", 33);
 
           case 26:
             camarero = {
               ciCamarero: ci,
               aniosExp: aniosExp
             };
-            _context4.next = 29;
+            _context5.next = 29;
             return connection.query('INSERT INTO camarero SET ?', camarero);
 
           case 29:
-            result4 = _context4.sent;
+            result4 = _context5.sent;
             console.log(result4);
-            return _context4.abrupt("break", 33);
+            return _context5.abrupt("break", 33);
 
           case 32:
-            return _context4.abrupt("break", 33);
+            return _context5.abrupt("break", 33);
 
           case 33:
             res.json({
               message: "usuario añadido"
             });
-            _context4.next = 40;
+            _context5.next = 40;
             break;
 
           case 36:
-            _context4.prev = 36;
-            _context4.t1 = _context4["catch"](0);
+            _context5.prev = 36;
+            _context5.t1 = _context5["catch"](0);
             res.status(500); //error de lado del servidor
 
-            res.send(_context4.t1.message);
+            res.send(_context5.t1.message);
 
           case 40:
-          case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4, null, [[0, 36]]);
-  }));
-
-  return function addPersona(_x7, _x8) {
-    return _ref4.apply(this, arguments);
-  };
-}();
-
-var deletePersona = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var ci, connection, result;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
-      while (1) {
-        switch (_context5.prev = _context5.next) {
-          case 0:
-            _context5.prev = 0;
-            ci = req.params.ci;
-            console.log("el ci es", ci);
-            _context5.next = 5;
-            return (0, _database.getConnection)();
-
-          case 5:
-            connection = _context5.sent;
-            _context5.next = 8;
-            return connection.query("DELETE FROM usuario WHERE ci=?", ci);
-
-          case 8:
-            result = _context5.sent;
-            console.log(result);
-            res.json(result);
-            _context5.next = 17;
-            break;
-
-          case 13:
-            _context5.prev = 13;
-            _context5.t0 = _context5["catch"](0);
-            res.status(500); //error de lado del servidor
-
-            res.send(_context5.t0.message);
-
-          case 17:
           case "end":
             return _context5.stop();
         }
       }
-    }, _callee5, null, [[0, 13]]);
+    }, _callee5, null, [[0, 36]]);
   }));
 
-  return function deletePersona(_x9, _x10) {
+  return function addPersona(_x9, _x10) {
     return _ref5.apply(this, arguments);
   };
 }();
 
-var updatePersona = /*#__PURE__*/function () {
+var deletePersona = /*#__PURE__*/function () {
   var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-    var _req$body3, ci, nombre, apPaterno, apMaterno, turno, username, password, aniosExp, institucion, profesion, selectTipo, usuario, connection, result, chef, result2, cajero, result3, camarero, result4;
-
+    var ci, connection, result;
     return _regeneratorRuntime().wrap(function _callee6$(_context6) {
       while (1) {
         switch (_context6.prev = _context6.next) {
           case 0:
             _context6.prev = 0;
+            ci = req.params.ci;
+            console.log("el ci es", ci);
+            _context6.next = 5;
+            return (0, _database.getConnection)();
+
+          case 5:
+            connection = _context6.sent;
+            _context6.next = 8;
+            return connection.query("DELETE FROM usuario WHERE ci=?", ci);
+
+          case 8:
+            result = _context6.sent;
+            console.log(result);
+            res.json(result);
+            _context6.next = 17;
+            break;
+
+          case 13:
+            _context6.prev = 13;
+            _context6.t0 = _context6["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context6.t0.message);
+
+          case 17:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, null, [[0, 13]]);
+  }));
+
+  return function deletePersona(_x11, _x12) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
+var updatePersona = /*#__PURE__*/function () {
+  var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
+    var _req$body3, ci, nombre, apPaterno, apMaterno, turno, username, password, aniosExp, institucion, profesion, selectTipo, usuario, connection, result, chef, result2, cajero, result3, camarero, result4;
+
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.prev = 0;
             //const {ci} = req.params;
             //const {ci,nombre,apPaterno,apMaterno,turno,username,password} = req.body;
             _req$body3 = req.body, ci = _req$body3.ci, nombre = _req$body3.nombre, apPaterno = _req$body3.apPaterno, apMaterno = _req$body3.apMaterno, turno = _req$body3.turno, username = _req$body3.username, password = _req$body3.password, aniosExp = _req$body3.aniosExp, institucion = _req$body3.institucion, profesion = _req$body3.profesion, selectTipo = _req$body3.selectTipo;
@@ -404,19 +446,19 @@ var updatePersona = /*#__PURE__*/function () {
               username: username,
               password: password
             };
-            _context6.next = 5;
+            _context7.next = 5;
             return (0, _database.getConnection)();
 
           case 5:
-            connection = _context6.sent;
-            _context6.next = 8;
+            connection = _context7.sent;
+            _context7.next = 8;
             return connection.query("UPDATE usuario SET ? WHERE ci = ?", [usuario, ci]);
 
           case 8:
-            result = _context6.sent;
+            result = _context7.sent;
             console.log(result);
-            _context6.t0 = selectTipo;
-            _context6.next = _context6.t0 === 'chef' ? 13 : _context6.t0 === 'cajero' ? 20 : _context6.t0 === 'camarero' ? 27 : 34;
+            _context7.t0 = selectTipo;
+            _context7.next = _context7.t0 === 'chef' ? 13 : _context7.t0 === 'cajero' ? 20 : _context7.t0 === 'camarero' ? 27 : 34;
             break;
 
           case 13:
@@ -426,13 +468,13 @@ var updatePersona = /*#__PURE__*/function () {
               institucion: institucion
             };
             console.log(chef);
-            _context6.next = 17;
+            _context7.next = 17;
             return connection.query("UPDATE chef SET ? WHERE ciChef = ?", [chef, ci]);
 
           case 17:
-            result2 = _context6.sent;
+            result2 = _context7.sent;
             console.log(result2);
-            return _context6.abrupt("break", 35);
+            return _context7.abrupt("break", 35);
 
           case 20:
             cajero = {
@@ -441,13 +483,13 @@ var updatePersona = /*#__PURE__*/function () {
               institucion: institucion
             };
             console.log(cajero);
-            _context6.next = 24;
+            _context7.next = 24;
             return connection.query("UPDATE cajero SET ? WHERE ciCajero = ?", [cajero, ci]);
 
           case 24:
-            result3 = _context6.sent;
+            result3 = _context7.sent;
             console.log(result3);
-            return _context6.abrupt("break", 35);
+            return _context7.abrupt("break", 35);
 
           case 27:
             camarero = {
@@ -455,106 +497,221 @@ var updatePersona = /*#__PURE__*/function () {
               aniosExp: aniosExp
             };
             console.log(camarero);
-            _context6.next = 31;
+            _context7.next = 31;
             return connection.query("UPDATE camarero SET ? WHERE ciCamarero = ?", [camarero, ci]);
 
           case 31:
-            result4 = _context6.sent;
+            result4 = _context7.sent;
             console.log(result4);
-            return _context6.abrupt("break", 35);
+            return _context7.abrupt("break", 35);
 
           case 34:
-            return _context6.abrupt("break", 35);
+            return _context7.abrupt("break", 35);
 
           case 35:
             res.json({
               message: "usuario modificado"
             });
-            _context6.next = 42;
+            _context7.next = 42;
             break;
 
           case 38:
-            _context6.prev = 38;
-            _context6.t1 = _context6["catch"](0);
+            _context7.prev = 38;
+            _context7.t1 = _context7["catch"](0);
             res.status(500); //error de lado del servidor
 
-            res.send(_context6.t1.message);
+            res.send(_context7.t1.message);
 
           case 42:
-          case "end":
-            return _context6.stop();
-        }
-      }
-    }, _callee6, null, [[0, 38]]);
-  }));
-
-  return function updatePersona(_x11, _x12) {
-    return _ref6.apply(this, arguments);
-  };
-}();
-
-var loginUsuario = /*#__PURE__*/function () {
-  var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
-    var _req$body4, username, password, connection, result, ci, token;
-
-    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
-      while (1) {
-        switch (_context7.prev = _context7.next) {
-          case 0:
-            _context7.prev = 0;
-            _req$body4 = req.body, username = _req$body4.username, password = _req$body4.password;
-            console.log(username, password);
-            _context7.next = 5;
-            return (0, _database.getConnection)();
-
-          case 5:
-            connection = _context7.sent;
-            _context7.next = 8;
-            return connection.query('SELECT ci FROM usuario WHERE (username = ?) and (password = ?)', [username, password]);
-
-          case 8:
-            result = _context7.sent;
-
-            if (result.length > 0) {
-              ci = result[0].ci; //para el token
-
-              token = _jsonwebtoken["default"].sign({
-                ci: ci
-              }, _config["default"].SECRET, {
-                expiresIn: 86400 //24h
-
-              });
-              console.log(result);
-              res.json({
-                token: token
-              });
-            } else {
-              console.log(result);
-              res.status(400).json({
-                message: "Credenciales Incorrectas"
-              });
-            }
-
-            _context7.next = 16;
-            break;
-
-          case 12:
-            _context7.prev = 12;
-            _context7.t0 = _context7["catch"](0);
-            res.status(500); //error de lado del servidor
-
-            res.send(_context7.t0.message);
-
-          case 16:
           case "end":
             return _context7.stop();
         }
       }
-    }, _callee7, null, [[0, 12]]);
+    }, _callee7, null, [[0, 38]]);
   }));
 
-  return function loginUsuario(_x13, _x14) {
+  return function updatePersona(_x13, _x14) {
     return _ref7.apply(this, arguments);
+  };
+}();
+
+var asignaRol = /*#__PURE__*/function () {
+  var _ref8 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+    var connection, _req$body4, ci, selectTipo, result4, chef, result2, cajero, result3, camarero, _result;
+
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.prev = 0;
+            _context8.next = 3;
+            return (0, _database.getConnection)();
+
+          case 3:
+            connection = _context8.sent;
+            _req$body4 = req.body, ci = _req$body4.ci, selectTipo = _req$body4.selectTipo;
+            console.log(ci, selectTipo);
+            _context8.next = 8;
+            return connection.query("DELETE FROM cliente WHERE ciCliente=?", ci);
+
+          case 8:
+            result4 = _context8.sent;
+            console.log(result4);
+            _context8.t0 = selectTipo;
+            _context8.next = _context8.t0 === 'chef' ? 13 : _context8.t0 === 'cajero' ? 20 : _context8.t0 === 'camarero' ? 27 : 34;
+            break;
+
+          case 13:
+            chef = {
+              ciChef: ci,
+              aniosExp: '',
+              institucion: ''
+            };
+            console.log(chef);
+            _context8.next = 17;
+            return connection.query("INSERT INTO chef SET ?", chef);
+
+          case 17:
+            result2 = _context8.sent;
+            console.log(result2);
+            return _context8.abrupt("break", 35);
+
+          case 20:
+            cajero = {
+              ciCajero: ci,
+              profesion: '',
+              institucion: ''
+            };
+            console.log(cajero);
+            _context8.next = 24;
+            return connection.query("INSERT INTO cajero SET ?", cajero);
+
+          case 24:
+            result3 = _context8.sent;
+            console.log(result3);
+            return _context8.abrupt("break", 35);
+
+          case 27:
+            camarero = {
+              ciCamarero: ci,
+              aniosExp: ''
+            };
+            console.log(camarero);
+            _context8.next = 31;
+            return connection.query("INSERT INTO camarero SET ?", camarero);
+
+          case 31:
+            _result = _context8.sent;
+            console.log(_result);
+            return _context8.abrupt("break", 35);
+
+          case 34:
+            return _context8.abrupt("break", 35);
+
+          case 35:
+            res.json({
+              message: "rol asignado"
+            });
+            _context8.next = 42;
+            break;
+
+          case 38:
+            _context8.prev = 38;
+            _context8.t1 = _context8["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context8.t1.message);
+
+          case 42:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8, null, [[0, 38]]);
+  }));
+
+  return function asignaRol(_x15, _x16) {
+    return _ref8.apply(this, arguments);
+  };
+}();
+
+var loginUsuario = /*#__PURE__*/function () {
+  var _ref9 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
+    var _req$body5, username, password, connection, result, ci, token, result2;
+
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.prev = 0;
+            _req$body5 = req.body, username = _req$body5.username, password = _req$body5.password;
+            console.log(username, password);
+            _context9.next = 5;
+            return (0, _database.getConnection)();
+
+          case 5:
+            connection = _context9.sent;
+            _context9.next = 8;
+            return connection.query('SELECT ci FROM usuario WHERE (username = ?) and (password = ?)', [username, password]);
+
+          case 8:
+            result = _context9.sent;
+
+            if (!(result.length > 0)) {
+              _context9.next = 19;
+              break;
+            }
+
+            ci = result[0].ci; //para el token
+
+            token = _jsonwebtoken["default"].sign({
+              ci: ci
+            }, _config["default"].SECRET, {
+              expiresIn: 86400 //24h
+
+            });
+            console.log(result);
+            _context9.next = 15;
+            return connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
+
+          case 15:
+            result2 = _context9.sent;
+            res.json({
+              token: token,
+              tipo: result2[0].tipo,
+              username: username,
+              ci: ci
+            });
+            _context9.next = 21;
+            break;
+
+          case 19:
+            console.log(result);
+            res.status(400).json({
+              message: "Credenciales Incorrectas"
+            });
+
+          case 21:
+            _context9.next = 27;
+            break;
+
+          case 23:
+            _context9.prev = 23;
+            _context9.t0 = _context9["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context9.t0.message);
+
+          case 27:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9, null, [[0, 23]]);
+  }));
+
+  return function loginUsuario(_x17, _x18) {
+    return _ref9.apply(this, arguments);
   };
 }();
 
@@ -565,6 +722,8 @@ var metodos = {
   deletePersona: deletePersona,
   updatePersona: updatePersona,
   loginUsuario: loginUsuario,
-  addClient: addClient
+  addClient: addClient,
+  asignaRol: asignaRol,
+  getClientes: getClientes
 };
 exports.metodos = metodos;

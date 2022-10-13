@@ -219,14 +219,14 @@ var deleteBebida = /*#__PURE__*/function () {
 
 var updateBebida = /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
-    var _req$body2, nombre, precio, descripcion, marca, tipo, grado_alcoholico, idProducto, producto, bebida, connection, result, result2;
+    var _req$body2, nombre, precio, descripcion, marca, tipo, grado_alcoholico, idProducto, image, producto, bebida, connection, result, result2;
 
     return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
         switch (_context5.prev = _context5.next) {
           case 0:
             _context5.prev = 0;
-            _req$body2 = req.body, nombre = _req$body2.nombre, precio = _req$body2.precio, descripcion = _req$body2.descripcion, marca = _req$body2.marca, tipo = _req$body2.tipo, grado_alcoholico = _req$body2.grado_alcoholico, idProducto = _req$body2.idProducto;
+            _req$body2 = req.body, nombre = _req$body2.nombre, precio = _req$body2.precio, descripcion = _req$body2.descripcion, marca = _req$body2.marca, tipo = _req$body2.tipo, grado_alcoholico = _req$body2.grado_alcoholico, idProducto = _req$body2.idProducto, image = _req$body2.image;
             producto = {
               nombre: nombre,
               precio: precio,
@@ -237,7 +237,8 @@ var updateBebida = /*#__PURE__*/function () {
               marca: marca,
               tipo: tipo,
               grado_alcoholico: grado_alcoholico,
-              idProducto: idProducto
+              idProducto: idProducto,
+              image: image
             }; //const result=await connection.query("UPDATE usuario SET ? WHERE ci = ?",[usuario, ci]);
 
             _context5.next = 6;

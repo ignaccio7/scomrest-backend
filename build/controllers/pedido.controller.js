@@ -232,6 +232,7 @@ var addPedido = /*#__PURE__*/function () {
 
           case 16:
             busca = _context6.sent;
+            console.log("busca");
             nroPedido = busca[0].nroPedido;
             console.log(nroPedido);
             /*products.forEach(element => {
@@ -275,22 +276,22 @@ var addPedido = /*#__PURE__*/function () {
             res.json({
               message: "pedido añadido"
             });
-            _context6.next = 28;
+            _context6.next = 29;
             break;
 
-          case 24:
-            _context6.prev = 24;
+          case 25:
+            _context6.prev = 25;
             _context6.t0 = _context6["catch"](0);
             res.status(500); //error de lado del servidor
 
             res.send(_context6.t0.message);
 
-          case 28:
+          case 29:
           case "end":
             return _context6.stop();
         }
       }
-    }, _callee6, null, [[0, 24]]);
+    }, _callee6, null, [[0, 25]]);
   }));
 
   return function addPedido(_x9, _x10) {
