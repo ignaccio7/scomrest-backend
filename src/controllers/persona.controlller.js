@@ -292,10 +292,30 @@ const loginUsuario = async (req, res) => {
                 expiresIn: 86400 //24h
             })
             console.log(result);
+            let tipo="";
+            //const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
+            const resultCliente = await connection.query("SELECT ciCliente FROM cliente");
+            resultCliente.forEach(element => {
+                if (element.ciCliente ==ci) {
+                    tipo="cliente";
+                }
+            });
 
-            const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
+            const resultChef = await connection.query("SELECT ciChef FROM chef");
+            resultChef.forEach(element => {
+                if (element.ciChef ==ci) {
+                    tipo="chef";
+                }
+            });
 
-            res.json({ token, tipo: result2[0].tipo, username, ci });
+            const resultCamarero = await connection.query("SELECT ciCliente FROM camarero");
+            resultCamarero.forEach(element => {
+                if (element.ciCamarero ==ci) {
+                    tipo="camarero";
+                }
+            });
+
+            res.json({ token, tipo, username, ci });
         } else {
             console.log(result);
             res.status(400).json({ message: "Credenciales Incorrectas" });
