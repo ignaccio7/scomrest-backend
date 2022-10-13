@@ -637,7 +637,7 @@ var asignaRol = /*#__PURE__*/function () {
 
 var loginUsuario = /*#__PURE__*/function () {
   var _ref9 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
-    var _req$body5, username, password, connection, result, ci, token, result2;
+    var _req$body5, username, password, connection, result, ci, token, tipo, resultCliente, resultChef, resultCamarero;
 
     return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) {
@@ -658,7 +658,7 @@ var loginUsuario = /*#__PURE__*/function () {
             result = _context9.sent;
 
             if (!(result.length > 0)) {
-              _context9.next = 19;
+              _context9.next = 29;
               break;
             }
 
@@ -671,43 +671,70 @@ var loginUsuario = /*#__PURE__*/function () {
 
             });
             console.log(result);
-            _context9.next = 15;
-            return connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
+            tipo = ""; //const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
 
-          case 15:
-            result2 = _context9.sent;
+            _context9.next = 16;
+            return connection.query("SELECT ciCliente FROM cliente");
+
+          case 16:
+            resultCliente = _context9.sent;
+            resultCliente.forEach(function (element) {
+              if (element.ciCliente == ci) {
+                tipo = "cliente";
+              }
+            });
+            _context9.next = 20;
+            return connection.query("SELECT ciChef FROM chef");
+
+          case 20:
+            resultChef = _context9.sent;
+            resultChef.forEach(function (element) {
+              if (element.ciChef == ci) {
+                tipo = "chef";
+              }
+            });
+            _context9.next = 24;
+            return connection.query("SELECT ciCliente FROM camarero");
+
+          case 24:
+            resultCamarero = _context9.sent;
+            resultCamarero.forEach(function (element) {
+              if (element.ciCamarero == ci) {
+                tipo = "camarero";
+              }
+            });
             res.json({
               token: token,
-              tipo: result2[0].tipo,
+              tipo: tipo,
               username: username,
               ci: ci
             });
-            _context9.next = 21;
+            _context9.next = 31;
             break;
 
-          case 19:
+          case 29:
             console.log(result);
             res.status(400).json({
               message: "Credenciales Incorrectas"
             });
 
-          case 21:
-            _context9.next = 27;
+          case 31:
+            _context9.next = 37;
             break;
 
-          case 23:
-            _context9.prev = 23;
+          case 33:
+            _context9.prev = 33;
             _context9.t0 = _context9["catch"](0);
             res.status(500); //error de lado del servidor
 
             res.send(_context9.t0.message);
 
-          case 27:
+          case 37:
           case "end":
             return _context9.stop();
         }
       }
-    }, _callee9, null, [[0, 23]]);
+    }, _callee9, null, [[0, 33]]);
   }));
 
   return function loginUsuario(_x17, _x18) {
