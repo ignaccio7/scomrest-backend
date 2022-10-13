@@ -658,7 +658,7 @@ var loginUsuario = /*#__PURE__*/function () {
             result = _context9.sent;
 
             if (!(result.length > 0)) {
-              _context9.next = 29;
+              _context9.next = 32;
               break;
             }
 
@@ -678,26 +678,29 @@ var loginUsuario = /*#__PURE__*/function () {
 
           case 16:
             resultCliente = _context9.sent;
+            console.log(resultCliente);
             resultCliente.forEach(function (element) {
               if (element[0].ciCliente == ci) {
                 tipo = "cliente";
               }
             });
-            _context9.next = 20;
+            _context9.next = 21;
             return connection.query("SELECT ciChef FROM chef");
 
-          case 20:
+          case 21:
             resultChef = _context9.sent;
+            console.log(resultChef);
             resultChef.forEach(function (element) {
               if (element[0].ciChef == ci) {
                 tipo = "chef";
               }
             });
-            _context9.next = 24;
+            _context9.next = 26;
             return connection.query("SELECT ciCliente FROM camarero");
 
-          case 24:
+          case 26:
             resultCamarero = _context9.sent;
+            console.log(resultCamarero);
             resultCamarero.forEach(function (element) {
               if (element[0].ciCamarero == ci) {
                 tipo = "camarero";
@@ -709,32 +712,32 @@ var loginUsuario = /*#__PURE__*/function () {
               username: username,
               ci: ci
             });
-            _context9.next = 31;
+            _context9.next = 34;
             break;
 
-          case 29:
+          case 32:
             console.log(result);
             res.status(400).json({
               message: "Credenciales Incorrectas"
             });
 
-          case 31:
-            _context9.next = 37;
+          case 34:
+            _context9.next = 40;
             break;
 
-          case 33:
-            _context9.prev = 33;
+          case 36:
+            _context9.prev = 36;
             _context9.t0 = _context9["catch"](0);
             res.status(500); //error de lado del servidor
 
             res.send(_context9.t0.message);
 
-          case 37:
+          case 40:
           case "end":
             return _context9.stop();
         }
       }
-    }, _callee9, null, [[0, 33]]);
+    }, _callee9, null, [[0, 36]]);
   }));
 
   return function loginUsuario(_x17, _x18) {
