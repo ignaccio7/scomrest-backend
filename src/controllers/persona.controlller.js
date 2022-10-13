@@ -297,29 +297,36 @@ const loginUsuario = async (req, res) => {
             //const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
             const resultCliente = await connection.query("SELECT ciCliente FROM cliente");
             console.log(resultCliente);
-            resultCliente.forEach(element => {
-                console.log("codigo de cliente:",element[0].ciCliente);
-                if (element[0].ciCliente ===ci) {
+            const rcl = Object.values(JSON.parse(JSON.stringify(resultCliente)));
+            console.log(rcl);
+            rcl.forEach(element => {
+                console.log("codigo de cliente:",element.ciCliente);
+                if (element.ciCliente ===ci) {
                     tipo="cliente";
                 }
             });
 
             const resultChef = await connection.query("SELECT ciChef FROM chef");
             console.log(resultChef);
-            resultChef.forEach(element => {
-                if (element[0].ciChef ===ci) {
+            const rch = Object.values(JSON.parse(JSON.stringify(resultChef)));
+            console.log(rch);
+            rch.forEach(element => {
+                if (element.ciChef ===ci) {
                     tipo="chef";
                 }
             });
 
             const resultCamarero = await connection.query("SELECT ciCamarero FROM camarero");
             console.log(resultCamarero);
-            resultCamarero.forEach(element => {
-                if (element[0].ciCamarero ===ci) {
+            const rca = Object.values(JSON.parse(JSON.stringify(resultCamarero)));
+            console.log(rca);
+            rca.forEach(element => {
+                if (element.ciCamarero ===ci) {
                     tipo="camarero";
                 }
             });
 
+            console.log("EL TIPO ES:",tipo);
             res.json({ token, tipo, username, ci });
         } else {
             console.log(result);
