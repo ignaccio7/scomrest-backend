@@ -4,6 +4,9 @@ import { verifyToken } from "../middlewares";
 
 const router = Router();
 
+//para listar los clientes
+router.get('/clientes/',personaController.getClientes);
+
 router.get('/',personaController.getPersonas);
 //router.get('/:ci',verifyToken,personaController.getPersona);
 router.get('/:ci',personaController.getPersona);
@@ -18,9 +21,6 @@ router.post('/login/',personaController.loginUsuario);
 router.post('/client/',personaController.addClient);
 
 //para asignar un rol al cliente
-router.post('/asignaRol/',personaController.asignaRol);
-
-//para listar los clientes
-router.get('/clientes/',personaController.getPersonasClient);
+router.post('/asignarol/',personaController.asignaRol);
 
 export default router;

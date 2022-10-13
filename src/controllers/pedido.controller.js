@@ -75,7 +75,7 @@ const addPedido = async (req,res)=>{
         console.log(result);
 
         const busca = await connection.query('SELECT nroPedido FROM pedido WHERE fecha LIKE ? AND hora LIKE ? AND idMesa LIKE ?',[fecha,hora,idMesa]);
-
+        console.log("busca");
         let nroPedido = busca[0].nroPedido;
         console.log(nroPedido);
         /*products.forEach(element => {

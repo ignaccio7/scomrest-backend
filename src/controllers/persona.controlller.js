@@ -14,17 +14,18 @@ const getPersonas = async (req, res) => {
     }
 }
 
-const getPersonasClient = async (req, res) => {
+const getClientes = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT xusu.* FROM usuario xusu,cliente xcli WHERE xcli.ciCliente=xusu.ci");
+        const result = await connection.query("SELECT xusu.* FROM usuario xusu,cliente xcli WHERE xcli.ciCliente=xusu.ci");        
         console.log(result);
         res.json(result);
     } catch (error) {
-        res.status(500);//error de lado del servidor
+        res.status(500);
         res.send(error.message);
     }
 }
+
 
 const getPersona = async (req, res) => {
     try {
@@ -228,7 +229,9 @@ const updatePersona = async (req, res) => {
 
 const asignaRol = async (req, res) => {
     try {
-        const { ci,selectTipo } = req.body;
+        const connection = await getConnection();
+        const { ci, selectTipo } = req.body;
+        console.log(ci, selectTipo);
 
         const result4 = await connection.query("DELETE FROM cliente WHERE ciCliente=?", ci);
         console.log(result4);
@@ -237,8 +240,8 @@ const asignaRol = async (req, res) => {
             case 'chef':
                 const chef = {
                     ciChef: ci,
-                    aniosExp:'1',
-                    institucion:'a'
+                    aniosExp: '',
+                    institucion: ''
                 }
                 console.log(chef);
                 const result2 = await connection.query("INSERT INTO chef SET ?", chef);
@@ -247,8 +250,8 @@ const asignaRol = async (req, res) => {
             case 'cajero':
                 const cajero = {
                     ciCajero: ci,
-                    profesion:'a',
-                    institucion:'a'
+                    profesion: '',
+                    institucion: ''
                 }
                 console.log(cajero);
                 const result3 = await connection.query("INSERT INTO cajero SET ?", cajero);
@@ -257,7 +260,7 @@ const asignaRol = async (req, res) => {
             case 'camarero':
                 const camarero = {
                     ciCamarero: ci,
-                    aniosExp:'1'
+                    aniosExp: ''
                 }
                 console.log(camarero);
                 const result4 = await connection.query("INSERT INTO camarero SET ?", camarero);
@@ -292,7 +295,7 @@ const loginUsuario = async (req, res) => {
 
             const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
 
-            res.json({ token,tipo:result2[0].tipo,username,ci });
+            res.json({ token, tipo: result2[0].tipo, username, ci });
         } else {
             console.log(result);
             res.status(400).json({ message: "Credenciales Incorrectas" });
@@ -312,5 +315,5 @@ export const metodos = {
     loginUsuario,
     addClient,
     asignaRol,
-    getPersonasClient
+    getClientes,
 };
