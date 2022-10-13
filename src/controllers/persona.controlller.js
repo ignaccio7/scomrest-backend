@@ -298,7 +298,7 @@ const loginUsuario = async (req, res) => {
             const resultCliente = await connection.query("SELECT ciCliente FROM cliente");
             console.log(resultCliente);
             resultCliente.forEach(element => {
-                if (element[0].ciCliente ==ci) {
+                if (element[0].ciCliente ===ci) {
                     console.log("codigo de cliente:",element[0].ciCliente);
                     tipo="cliente";
                 }
@@ -307,7 +307,7 @@ const loginUsuario = async (req, res) => {
             const resultChef = await connection.query("SELECT ciChef FROM chef");
             console.log(resultChef);
             resultChef.forEach(element => {
-                if (element[0].ciChef ==ci) {
+                if (element[0].ciChef ===ci) {
                     tipo="chef";
                 }
             });
@@ -315,7 +315,7 @@ const loginUsuario = async (req, res) => {
             const resultCamarero = await connection.query("SELECT ciCliente FROM camarero");
             console.log(resultCamarero);
             resultCamarero.forEach(element => {
-                if (element[0].ciCamarero ==ci) {
+                if (element[0].ciCamarero ===ci) {
                     tipo="camarero";
                 }
             });

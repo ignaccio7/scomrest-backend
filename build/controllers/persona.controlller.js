@@ -658,11 +658,12 @@ var loginUsuario = /*#__PURE__*/function () {
             result = _context9.sent;
 
             if (!(result.length > 0)) {
-              _context9.next = 32;
+              _context9.next = 33;
               break;
             }
 
-            ci = result[0].ci; //para el token
+            ci = result[0].ci;
+            console.log("el ci es :", ci); //para el token
 
             token = _jsonwebtoken["default"].sign({
               ci: ci
@@ -673,36 +674,37 @@ var loginUsuario = /*#__PURE__*/function () {
             console.log(result);
             tipo = ""; //const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
 
-            _context9.next = 16;
+            _context9.next = 17;
             return connection.query("SELECT ciCliente FROM cliente");
 
-          case 16:
+          case 17:
             resultCliente = _context9.sent;
             console.log(resultCliente);
             resultCliente.forEach(function (element) {
-              if (element[0].ciCliente == ci) {
+              if (element[0].ciCliente === ci) {
+                console.log("codigo de cliente:", element[0].ciCliente);
                 tipo = "cliente";
               }
             });
-            _context9.next = 21;
+            _context9.next = 22;
             return connection.query("SELECT ciChef FROM chef");
 
-          case 21:
+          case 22:
             resultChef = _context9.sent;
             console.log(resultChef);
             resultChef.forEach(function (element) {
-              if (element[0].ciChef == ci) {
+              if (element[0].ciChef === ci) {
                 tipo = "chef";
               }
             });
-            _context9.next = 26;
+            _context9.next = 27;
             return connection.query("SELECT ciCliente FROM camarero");
 
-          case 26:
+          case 27:
             resultCamarero = _context9.sent;
             console.log(resultCamarero);
             resultCamarero.forEach(function (element) {
-              if (element[0].ciCamarero == ci) {
+              if (element[0].ciCamarero === ci) {
                 tipo = "camarero";
               }
             });
@@ -712,32 +714,32 @@ var loginUsuario = /*#__PURE__*/function () {
               username: username,
               ci: ci
             });
-            _context9.next = 34;
+            _context9.next = 35;
             break;
 
-          case 32:
+          case 33:
             console.log(result);
             res.status(400).json({
               message: "Credenciales Incorrectas"
             });
 
-          case 34:
-            _context9.next = 40;
+          case 35:
+            _context9.next = 41;
             break;
 
-          case 36:
-            _context9.prev = 36;
+          case 37:
+            _context9.prev = 37;
             _context9.t0 = _context9["catch"](0);
             res.status(500); //error de lado del servidor
 
             res.send(_context9.t0.message);
 
-          case 40:
+          case 41:
           case "end":
             return _context9.stop();
         }
       }
-    }, _callee9, null, [[0, 36]]);
+    }, _callee9, null, [[0, 37]]);
   }));
 
   return function loginUsuario(_x17, _x18) {
