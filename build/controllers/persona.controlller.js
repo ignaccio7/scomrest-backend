@@ -699,7 +699,7 @@ var loginUsuario = /*#__PURE__*/function () {
               }
             });
             _context9.next = 27;
-            return connection.query("SELECT ciCliente FROM camarero");
+            return connection.query("SELECT ciCamarero FROM camarero");
 
           case 27:
             resultCamarero = _context9.sent;

@@ -312,7 +312,7 @@ const loginUsuario = async (req, res) => {
                 }
             });
 
-            const resultCamarero = await connection.query("SELECT ciCliente FROM camarero");
+            const resultCamarero = await connection.query("SELECT ciCamarero FROM camarero");
             console.log(resultCamarero);
             resultCamarero.forEach(element => {
                 if (element[0].ciCamarero ===ci) {
