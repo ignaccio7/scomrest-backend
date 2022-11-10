@@ -130,6 +130,7 @@ const updatePlato = async (req, res) => {
 
 const getPlatosPedido = async (req, res) => {
     try {
+        console.log("OBTENIENDO : getPlatosPedido");
         const connection = await getConnection();
         const result = await connection.query("SELECT xpla.idProducto,xpla.stock,xpla.ciudadProv,xpro.nombre,xpro.descripcion,xpro.precio,xpla.image FROM plato xpla, producto xpro WHERE xpla.idProducto = xpro.idProducto AND xpla.stock>0");
         console.log(result);

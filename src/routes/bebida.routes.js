@@ -3,6 +3,9 @@ import { metodos as bebidaControllers } from '../controllers/bebida.controller.j
 
 const router = Router();
 
+//obtener bebidas para el pedido
+router.get('/pedido/',bebidaControllers.getBebidasPedido);
+
 router.get('/',bebidaControllers.getBebidas);
 router.get('/:idProducto',bebidaControllers.getBebida);
 router.post('/',bebidaControllers.addBebida);

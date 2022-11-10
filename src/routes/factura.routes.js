@@ -4,6 +4,8 @@ import { metodos as facturaControllers } from '../controllers/factura.controller
 const router = Router();
 
 router.get('/',facturaControllers.getFacturas);
+//obteniendo facturas para el cajero
+router.get('/pedidosCajero/',facturaControllers.getPedidosCajero);
 //para obtener las facturas por ci del cliente
 router.get('/:ciCliente',facturaControllers.getFacturasCliente);
 //para adicionar los pedidos a una determinada factura

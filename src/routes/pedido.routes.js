@@ -13,4 +13,15 @@ router.put('/enabled/:nroPedido',pedidoController.enablePedido);
 //para llenar datos en el pedido
 router.post('/',pedidoController.addPedido);
 
+//para listar los pedidos del cliente
+router.get('/pedidosCliente/:ci',pedidoController.getPedidosCliente);
+//para listar los pedidos para el chef
+router.get('/pedidosChef/',pedidoController.getPedidosChef);
+
+//para listar los pedidos para el camarero
+router.get('/pedidosCamarero/',pedidoController.getPedidosCamarero);
+router.get('/:id',pedidoController.getPedido);
+router.post('/actualiza/',pedidoController.actualizaPedido);
+
+
 export default router;

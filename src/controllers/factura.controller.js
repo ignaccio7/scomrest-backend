@@ -27,6 +27,20 @@ const getFacturasCliente = async (req, res) => {
     }
 }
 
+//OBTENIENDO PEDIDOS CON UN ESTADO 2 PARA SER FACTURADOS
+//obteniendo pedidos para el CAJERO y pueda facturar
+const getPedidosCajero = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '2'");
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
 const addFactura = async (req,res)=>{
     try {
         const connection = await getConnection();
@@ -68,5 +82,6 @@ const addFactura = async (req,res)=>{
 export const metodos = {
     getFacturas,
     getFacturasCliente,
-    addFactura
+    addFactura,
+    getPedidosCajero,
 };
