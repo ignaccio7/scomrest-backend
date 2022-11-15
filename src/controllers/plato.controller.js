@@ -40,6 +40,60 @@ const getIngredientesPlato = async (req,res)=>{
     }
 }
 
+const addIngredientesPlato = async (req,res)=>{
+    try {
+        const { idProducto,ingredients } = req.body;
+
+        const connection = await getConnection();
+
+        let pay = {
+            idProducto:idProducto,
+            idIng:""
+        } 
+        let result;
+
+        ingredients.forEach(async element => {
+            pay.idIng=element.idIng;
+            console.log(pay);
+            result = await connection.query('INSERT INTO contiene SET ?',pay);
+            console.log(result);
+        });
+        res.json({message:"Ingredientes añadidos"});
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
+const updateIngredientesPlato = async (req,res)=>{
+    try {
+        const { idProducto,ingredients } = req.body;
+
+        const connection = await getConnection();
+
+        //eliminamos los registros tenidos anteriormente y creamos un nuevo pedido
+        const eli1 = await connection.query('DELETE FROM contiene WHERE idProducto = ?', idProducto);
+        console.log(eli1);
+
+        let pay = {
+            idProducto:idProducto,
+            idIng:""
+        } 
+        let result;
+
+        ingredients.forEach(async element => {
+            pay.idIng=element.idIng;
+            console.log(pay);
+            result = await connection.query('INSERT INTO contiene SET ?',pay);
+            console.log(result);
+        });
+        res.json({message:"Ingredientes actualizados"});
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
 const addPlato = async (req, res) => {
     try {
         const connection = await getConnection();
@@ -149,5 +203,7 @@ export const metodos = {
     addStock,
     deletePlato,
     updatePlato,
-    getPlatosPedido    
+    getPlatosPedido,
+    addIngredientesPlato,
+    updateIngredientesPlato,    
 };

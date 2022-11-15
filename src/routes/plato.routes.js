@@ -10,6 +10,10 @@ router.get('/pedido/',platoControllers.getPlatosPedido);
 router.get('/:idProducto',platoControllers.getPlato);
 router.get('/ingredientes/:idProducto',platoControllers.getIngredientesPlato);
 router.post('/',platoControllers.addPlato);
+//agregar ingredientes a un plato
+router.post('/ingredientesPlato/',platoControllers.addIngredientesPlato);
+//actualizar ingredientes de un plato
+router.post('/actuingredientesPlato/',platoControllers.addIngredientesPlato);
 //para actualizar el stock
 router.put('/:idProducto',platoControllers.addStock);
 //para eliminar el plato

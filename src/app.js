@@ -12,7 +12,7 @@ import facturaRouter from './routes/factura.routes';
 import config from "./config.js";
 
 console.log(config.port);
-
+//PARA EL CORS
 const cors = require('cors');
 
 const app=express();
