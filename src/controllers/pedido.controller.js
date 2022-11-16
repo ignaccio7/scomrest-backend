@@ -56,13 +56,38 @@ const getproductosPedido = async (req, res) => {
 const enablePedido = async (req, res) => {
     try {
         const { nroPedido } = req.params;
-        const { habilitado } = req.body;
+        const { habilitado, ci } = req.body;
 
-        const pedido = {
+        console.log("datos pedido:",nroPedido,"-",habilitado,"-",ci);
+
+        let pedido = {
             habilitado, nroPedido
         }
-
+        
         const connection = await getConnection();
+
+        const resultChef = await connection.query("SELECT ciChef FROM chef");
+        console.log(resultChef);
+        const rch = Object.values(JSON.parse(JSON.stringify(resultChef)));
+        console.log(rch);
+        rch.forEach(element => {
+            if (element.ciChef === ci) {
+                pedido.ciChef = ci;
+                console.log(pedido);
+            }
+        });
+
+        const resultCamarero = await connection.query("SELECT ciCamarero FROM camarero");
+        console.log(resultCamarero);
+        const rca = Object.values(JSON.parse(JSON.stringify(resultCamarero)));
+        console.log(rca);
+        rca.forEach(element => {
+            if (element.ciCamarero === ci) {
+                pedido.ciCamarero = ci;
+                console.log(pedido);
+            }
+        });        
+
         const result = await connection.query("UPDATE pedido SET ? WHERE nroPedido = ?", [pedido, nroPedido]);
         console.log(result);
         res.json({ message: "Pedido Actualizado" });
@@ -141,10 +166,10 @@ const enablePedido = async (req, res) => {
 //     }
 // }
 
-const addPedido = async (req,res)=>{
+const addPedido = async (req, res) => {
     try {
         const connection = await getConnection();
-        const {fecha,idMesa,products,productsb,hora,ci} = req.body;
+        const { fecha, idMesa, products, productsb, hora, ci } = req.body;
         console.log("Datos para registro del pedido");
         console.log(fecha);
         console.log(idMesa);
@@ -153,14 +178,14 @@ const addPedido = async (req,res)=>{
         console.log(products);
         console.log(productsb);
 
-        const pedido={
-            fecha,hora,idMesa,habilitado:0,ciCliente:ci
-        }  
+        const pedido = {
+            fecha, hora, idMesa, habilitado: 0, ciCliente: ci
+        }
 
-        const result = await connection.query('INSERT INTO pedido SET ?',pedido);
+        const result = await connection.query('INSERT INTO pedido SET ?', pedido);
         console.log(result);
 
-        const busca = await connection.query('SELECT nroPedido FROM pedido WHERE fecha LIKE ? AND hora LIKE ? AND idMesa LIKE ?',[fecha,hora,idMesa]);
+        const busca = await connection.query('SELECT nroPedido FROM pedido WHERE fecha LIKE ? AND hora LIKE ? AND idMesa LIKE ?', [fecha, hora, idMesa]);
         console.log("busca");
         let nroPedido = busca[0].nroPedido;
         console.log(nroPedido);
@@ -168,45 +193,45 @@ const addPedido = async (req,res)=>{
             console.log(element.idProducto,element.cantidad); 
         });*/
         let pay = {
-            idProducto:"",
-            nroPedido:"",
-            cantidad:""            
-        }                
+            idProducto: "",
+            nroPedido: "",
+            cantidad: ""
+        }
         let result2;
         let result3;
         let result4;
         products.forEach(async element => {
-            pay.idProducto=element.idProducto;
-            pay.cantidad=element.cantidad;
-            pay.nroPedido=nroPedido;
+            pay.idProducto = element.idProducto;
+            pay.cantidad = element.cantidad;
+            pay.nroPedido = nroPedido;
             console.log(pay);
-            result2 = await connection.query('INSERT INTO adquiere SET ?',pay);
+            result2 = await connection.query('INSERT INTO adquiere SET ?', pay);
             console.log(result2);
 
             result3 = await connection.query('SELECT stock FROM plato WHERE idProducto = ?', element.idProducto);
-            console.log("Stock del producto ",result3[0].stock);
+            console.log("Stock del producto ", result3[0].stock);
 
-            result4 = await connection.query('UPDATE plato SET stock=? WHERE idProducto=?', [result3[0].stock-element.cantidad, element.idProducto]);
+            result4 = await connection.query('UPDATE plato SET stock=? WHERE idProducto=?', [result3[0].stock - element.cantidad, element.idProducto]);
             console.log(result4);
         });
 
         let pay2 = {
-            idProducto:"",
-            nroPedido:"",
-            cantidad:""            
-        }                
+            idProducto: "",
+            nroPedido: "",
+            cantidad: ""
+        }
         let result22;
         productsb.forEach(async element => {
-            pay2.idProducto=element.idProducto;
-            pay2.cantidad=element.cantidad;
-            pay2.nroPedido=nroPedido;
+            pay2.idProducto = element.idProducto;
+            pay2.cantidad = element.cantidad;
+            pay2.nroPedido = nroPedido;
             console.log(pay2);
-            result22 = await connection.query('INSERT INTO adquiere SET ?',pay2);
+            result22 = await connection.query('INSERT INTO adquiere SET ?', pay2);
             console.log(result22);
         });
 
-        res.json({message:"pedido añadido"});
-        
+        res.json({ message: "pedido añadido" });
+
     } catch (error) {
         res.status(500);//error de lado del servidor
         res.send(error.message);
@@ -259,12 +284,12 @@ const getPedidosChef = async (req, res) => {
 const actualizaPedido = async (req, res) => {
     try {
         const connection = await getConnection();
-        const {fecha,idMesa,products,productsb,hora,ciCliente,ciCamarero, nroPedido} = req.body;
+        const { fecha, idMesa, products, productsb, hora, ciCliente, ciCamarero, nroPedido } = req.body;
         console.log("Datos para registro del pedido");
         console.log(fecha);
         console.log(idMesa);
         console.log(hora);
-        console.log(ciCliente,ciCamarero);
+        console.log(ciCliente, ciCamarero);
         console.log(products);
         console.log(productsb);
         console.log(nroPedido);
@@ -277,55 +302,55 @@ const actualizaPedido = async (req, res) => {
         console.log("despues de eliminar");
 
         //---------------------------------------------------------------------------
-        const pedido={
-            fecha,hora,idMesa,habilitado:1,ciCliente,ciCamarero,nroPedido
-        }  
+        const pedido = {
+            fecha, hora, idMesa, habilitado: 1, ciCliente, ciCamarero, nroPedido
+        }
 
-        const result = await connection.query('INSERT INTO pedido SET ?',pedido);
+        const result = await connection.query('INSERT INTO pedido SET ?', pedido);
         console.log(result);
 
         /*products.forEach(element => {
             console.log(element.idProducto,element.cantidad); 
         });*/
         let pay = {
-            idProducto:"",
-            nroPedido:"",
-            cantidad:""            
-        }                
+            idProducto: "",
+            nroPedido: "",
+            cantidad: ""
+        }
         let result2;
         let result3;
         let result4;
         products.forEach(async element => {
-            pay.idProducto=element.idproducto;
-            pay.cantidad=element.cantidad;
-            pay.nroPedido=nroPedido;
+            pay.idProducto = element.idproducto;
+            pay.cantidad = element.cantidad;
+            pay.nroPedido = nroPedido;
             console.log(pay);
-            result2 = await connection.query('INSERT INTO adquiere SET ?',pay);
+            result2 = await connection.query('INSERT INTO adquiere SET ?', pay);
             console.log(result2);
 
             result3 = await connection.query('SELECT stock FROM plato WHERE idProducto = ?', element.idproducto);
-            console.log("Stock del producto ",result3[0].stock);
+            console.log("Stock del producto ", result3[0].stock);
 
-            result4 = await connection.query('UPDATE plato SET stock=? WHERE idProducto=?', [result3[0].stock-element.cantidad, element.idproducto]);
+            result4 = await connection.query('UPDATE plato SET stock=? WHERE idProducto=?', [result3[0].stock - element.cantidad, element.idproducto]);
             console.log(result4);
         });
 
         let pay2 = {
-            idProducto:"",
-            nroPedido:"",
-            cantidad:""            
-        }                
+            idProducto: "",
+            nroPedido: "",
+            cantidad: ""
+        }
         let result22;
         productsb.forEach(async element => {
-            pay2.idProducto=element.idproducto;
-            pay2.cantidad=element.cantidad;
-            pay2.nroPedido=nroPedido;
+            pay2.idProducto = element.idproducto;
+            pay2.cantidad = element.cantidad;
+            pay2.nroPedido = nroPedido;
             console.log(pay2);
-            result22 = await connection.query('INSERT INTO adquiere SET ?',pay2);
+            result22 = await connection.query('INSERT INTO adquiere SET ?', pay2);
             console.log(result22);
         });
 
-        res.json({message:"pedido modificado"});
+        res.json({ message: "pedido modificado" });
 
     } catch (error) {
         res.status(500);//error de lado del servidor

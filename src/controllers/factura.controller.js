@@ -6,23 +6,63 @@ import { getConnection } from '../database/database.js';
 const getPdf = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT idMesa,nroSillas,disponibilidad FROM mesa");
+        const { idFactura } = req.params;
+        const result = await connection.query("SELECT xfac.* FROM factura xfac WHERE idFactura = ?", idFactura);
+        const result2 = await connection.query("SELECT xusu.apPaterno as patCliente FROM factura xfac,usuario xusu WHERE xusu.ci = xfac.ciCliente AND idFactura = ?", idFactura);
+        const result3 = await connection.query("SELECT xusu.apPaterno as patCajero FROM factura xfac,usuario xusu WHERE xusu.ci = xfac.ciCajero AND idFactura = ?", idFactura);
+        //nrodepedido por los pedidos
+        const result4 = await connection.query("SELECT xped.nroPedido FROM pedido xped WHERE idFactura = ?", idFactura);
+        let result5;
+        let vecNroPedidos = [];
         console.log(result);
         console.log(JSON.stringify(result[0]));
-        const content = `
-        <h1>Factura NROº </h1>
-            <p>Generando un PDF con un HTML sencillo11</p>
-            ${JSON.stringify(result[0])}    
+        let content = `<html>
+        <img src="archivePdf/logoscomSinfondo.png" alt="no hay imagen"> </br>
+        <h1>Factura NROº ${idFactura} </h1>
+        -------------------------------------------------------------<br/>
+            FECHA : ${result[0].fecha}<br/>
+            HORA : ${result[0].hora}<br/>
+            SEÑOR(ES)  : ${result2[0].patCliente}<br/>
+        -------------------------------------------------------------<br/>`;
+        console.log("LOS NUMEROS DE PEDIDOS SON");
+        console.log(result4);
+        result4.forEach(async element => {
+            console.log(element.nroPedido);
+            vecNroPedidos.push(element.nroPedido);
+            //content = content + `-${element.nroPedido}-<br/>`;
+        });
+        console.log("LOS NUMEROS DE PEDIDOS SON");
+
+        console.log("VECTOR DE PEDIDOS:", vecNroPedidos);
+        content = content+`<table> <tr> <td>DESCRIPCION</td> <td>PRECIO</td> <td>CANTIDAD</td> <td>TOTAL</td> </tr>`;
+        for (let index = 0; index < vecNroPedidos.length; index++) {
+            const el = vecNroPedidos[index];
+            console.log("------NUMERO DE PEDIDO :", el);
+            result5 = await connection.query("SELECT xpro.nombre,xpro.precio,xadqui.cantidad FROM adquiere xadqui, producto xpro WHERE xadqui.idproducto = xpro.idproducto AND xadqui.nropedido = ?", el);
+            console.log(result5);
+            result5.forEach(element => {
+                console.log(element.nombre);
+                //content = content + `-${element.nombre}-<br/>`;
+                content = content+`<tr><td>-${element.nombre}</td><td>${element.precio}</td><td>${element.cantidad}</td><td>${element.cantidad*element.precio}</td></tr>`;    
+            });
+        }
+        content = content + `</table><br/>`;
+        content = content + `-------------------------------------------------------------<br/>
+            TOTAL A PAGAR  : ${result[0].total}<br/> 
+            CAMBIO  : ${result[0].cambio}<br/> 
+            USUARIO  : ${result3[0].patCajero}<br/> 
+            </html>
         `;
-        pdf.create(content).toFile('./html-pdf.pdf', function (err, res) {
+        pdf.create(await content).toFile('./html-pdf.pdf', function (err, res) {
             if (err) {
                 console.log(err);
             } else {
                 console.log(res);
             }
         });
-        console.log("hola");
-        res.json({ message: "hola mundo" });
+        //console.log(content);
+        await console.log("hola");
+        await res.json({ message: "hola mundo" });
     } catch (error) {
         console.log(error);
     }
@@ -99,7 +139,7 @@ const addFactura = async (req, res) => {
             result2 = await connection.query("UPDATE pedido SET idFactura = ? WHERE nroPedido = ?", [idFactura, nroPedido]);
             console.log(result2);
         });
-        res.json({ message: "Factura Registrada" });
+        res.json({ message: "Factura Registrada", idFactura: idFactura });
 
     } catch (error) {
         res.status(500);//error de lado del servidor
