@@ -58,180 +58,319 @@ var getPedidos = /*#__PURE__*/function () {
   };
 }();
 
-var getPedidosHabilitados = /*#__PURE__*/function () {
+var getPedido = /*#__PURE__*/function () {
   var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var connection, result;
+    var id, connection, result;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
             _context2.prev = 0;
-            _context2.next = 3;
+            id = req.params.id;
+            _context2.next = 4;
             return (0, _database.getConnection)();
 
-          case 3:
+          case 4:
             connection = _context2.sent;
-            _context2.next = 6;
-            return connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '1'");
+            _context2.next = 7;
+            return connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas,xped.ciCliente FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '0' AND xped.nroPedido = ?", id);
 
-          case 6:
+          case 7:
             result = _context2.sent;
             console.log(result);
             res.json(result);
-            _context2.next = 15;
+            _context2.next = 16;
             break;
 
-          case 11:
-            _context2.prev = 11;
+          case 12:
+            _context2.prev = 12;
             _context2.t0 = _context2["catch"](0);
             res.status(500); //error de lado del servidor
 
             res.send(_context2.t0.message);
 
-          case 15:
+          case 16:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 11]]);
+    }, _callee2, null, [[0, 12]]);
   }));
 
-  return function getPedidosHabilitados(_x3, _x4) {
+  return function getPedido(_x3, _x4) {
     return _ref2.apply(this, arguments);
   };
 }();
 
-var getproductosPedido = /*#__PURE__*/function () {
+var getPedidosHabilitados = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
-    var nroPedido, connection, result;
+    var connection, result;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.prev = 0;
-            nroPedido = req.params.nroPedido;
-            _context3.next = 4;
+            _context3.next = 3;
             return (0, _database.getConnection)();
 
-          case 4:
+          case 3:
             connection = _context3.sent;
-            _context3.next = 7;
-            return connection.query("SELECT xadqui.nropedido,xpro.nombre,xpro.precio FROM adquiere xadqui, producto xpro WHERE xadqui.idproducto = xpro.idproducto AND xadqui.nropedido =?", nroPedido);
+            _context3.next = 6;
+            return connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '1'");
 
-          case 7:
+          case 6:
             result = _context3.sent;
             console.log(result);
             res.json(result);
-            _context3.next = 16;
+            _context3.next = 15;
             break;
 
-          case 12:
-            _context3.prev = 12;
+          case 11:
+            _context3.prev = 11;
             _context3.t0 = _context3["catch"](0);
             res.status(500); //error de lado del servidor
 
             res.send(_context3.t0.message);
 
-          case 16:
+          case 15:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 12]]);
+    }, _callee3, null, [[0, 11]]);
   }));
 
-  return function getproductosPedido(_x5, _x6) {
+  return function getPedidosHabilitados(_x5, _x6) {
     return _ref3.apply(this, arguments);
   };
 }();
 
-var enablePedido = /*#__PURE__*/function () {
+var getproductosPedido = /*#__PURE__*/function () {
   var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var nroPedido, habilitado, pedido, connection, result;
+    var nroPedido, connection, result;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             _context4.prev = 0;
             nroPedido = req.params.nroPedido;
-            habilitado = req.body.habilitado;
-            pedido = {
-              habilitado: habilitado,
-              nroPedido: nroPedido
-            };
-            _context4.next = 6;
+            _context4.next = 4;
             return (0, _database.getConnection)();
 
-          case 6:
+          case 4:
             connection = _context4.sent;
-            _context4.next = 9;
-            return connection.query("UPDATE pedido SET ? WHERE nroPedido = ?", [pedido, nroPedido]);
+            _context4.next = 7;
+            return connection.query("SELECT xpro.idproducto,xpro.nombre,xpro.precio,xadqui.cantidad FROM adquiere xadqui, producto xpro WHERE xadqui.idproducto = xpro.idproducto AND xadqui.nropedido =?", nroPedido);
 
-          case 9:
+          case 7:
             result = _context4.sent;
             console.log(result);
-            res.json({
-              message: "Pedido Actualizado"
-            });
-            _context4.next = 18;
+            res.json(result);
+            _context4.next = 16;
             break;
 
-          case 14:
-            _context4.prev = 14;
+          case 12:
+            _context4.prev = 12;
             _context4.t0 = _context4["catch"](0);
             res.status(500); //error de lado del servidor
 
             res.send(_context4.t0.message);
 
-          case 18:
+          case 16:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 14]]);
+    }, _callee4, null, [[0, 12]]);
   }));
 
-  return function enablePedido(_x7, _x8) {
+  return function getproductosPedido(_x7, _x8) {
     return _ref4.apply(this, arguments);
   };
 }();
 
-var addPedido = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
-    var connection, _req$body, fecha, idMesa, products, hora, pedido, result, busca, nroPedido, pay, result2;
+var enablePedido = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+    var nroPedido, _req$body, habilitado, ci, pedido, connection, resultChef, rch, resultCamarero, rca, result;
 
-    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            _context6.prev = 0;
-            _context6.next = 3;
+            _context5.prev = 0;
+            nroPedido = req.params.nroPedido;
+            _req$body = req.body, habilitado = _req$body.habilitado, ci = _req$body.ci;
+            console.log("datos pedido:", nroPedido, "-", habilitado, "-", ci);
+            pedido = {
+              habilitado: habilitado,
+              nroPedido: nroPedido
+            };
+            _context5.next = 7;
+            return (0, _database.getConnection)();
+
+          case 7:
+            connection = _context5.sent;
+            _context5.next = 10;
+            return connection.query("SELECT ciChef FROM chef");
+
+          case 10:
+            resultChef = _context5.sent;
+            console.log(resultChef);
+            rch = Object.values(JSON.parse(JSON.stringify(resultChef)));
+            console.log(rch);
+            rch.forEach(function (element) {
+              if (element.ciChef === ci) {
+                pedido.ciChef = ci;
+                console.log(pedido);
+              }
+            });
+            _context5.next = 17;
+            return connection.query("SELECT ciCamarero FROM camarero");
+
+          case 17:
+            resultCamarero = _context5.sent;
+            console.log(resultCamarero);
+            rca = Object.values(JSON.parse(JSON.stringify(resultCamarero)));
+            console.log(rca);
+            rca.forEach(function (element) {
+              if (element.ciCamarero === ci) {
+                pedido.ciCamarero = ci;
+                console.log(pedido);
+              }
+            });
+            _context5.next = 24;
+            return connection.query("UPDATE pedido SET ? WHERE nroPedido = ?", [pedido, nroPedido]);
+
+          case 24:
+            result = _context5.sent;
+            console.log(result);
+            res.json({
+              message: "Pedido Actualizado"
+            });
+            _context5.next = 33;
+            break;
+
+          case 29:
+            _context5.prev = 29;
+            _context5.t0 = _context5["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context5.t0.message);
+
+          case 33:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[0, 29]]);
+  }));
+
+  return function enablePedido(_x9, _x10) {
+    return _ref5.apply(this, arguments);
+  };
+}(); // const addPedido = async (req, res) => {
+//     try {
+//         const connection = await getConnection();
+//         const { fecha, idMesa, products, hora, ci } = req.body;
+//         console.log("Datos para registro del pedido");
+//         console.log(fecha);
+//         console.log(idMesa);
+//         console.log(hora);
+//         console.log(ci);
+//         const pedido = {
+//             fecha, hora, idMesa, habilitado: 0, ciCliente: ci
+//         }
+//         const result = await connection.query('INSERT INTO pedido SET ?', pedido);
+//         console.log(result);
+//         const busca = await connection.query('SELECT nroPedido FROM pedido WHERE fecha LIKE ? AND hora LIKE ? AND idMesa LIKE ?', [fecha, hora, idMesa]);
+//         console.log("busca");
+//         console.log(busca);
+//         console.log("aaa");
+//         let nroPedido = busca[0].nroPedido;
+//         console.log(nroPedido);
+//         /*products.forEach(element => {
+//             console.log(element.idProducto,element.cantidad); 
+//         });*/
+//         let pay = {
+//             idProducto: "",
+//             nroPedido: "",
+//             cantidad: ""
+//         }
+//         let result2;
+//         let qstockproductobuscado;
+//         let stockproductobuscado;
+//         let verificandoStock;
+//         let actuali;
+//         products.forEach(async element => {
+//             console.log("asigna");
+//             pay.idProducto = element.idProducto;
+//             pay.cantidad = element.cantidad;
+//             pay.nroPedido = nroPedido;
+//             console.log(pay);
+//             console.log("asigna222");
+//             /**PARA DISMINUIR EL STOCK DEL PLATO SEGUN LA CANTIDAD*/
+//             qstockproductobuscado = await connection.query('SELECT stock FROM plato WHERE idProducto = ?', element.idProducto);
+//             console.log("STOCK producto buscado");
+//             stockproductobuscado = qstockproductobuscado[0].stock;
+//             console.log(stockproductobuscado);
+//             verificandoStock = stockproductobuscado - element.cantidad;
+//             //registramos el pedido en la tabla adquiere
+//             result2 = await connection.query('INSERT INTO adquiere SET ?', pay);
+//             console.log(result2);
+//             //actualizando el stock en la tabla de platos
+//             actuali = await connection.query('UPDATE plato SET stock=? WHERE idProducto=?', [verificandoStock, element.idProducto]);
+//             console.log("ACTUALIZANDO EL STOCK");
+//             console.log(actuali);
+//             console.log("TERMINA PROCESSSSSSSSSS-------------------------------------");
+//         });
+//         res.json({ message: "pedido añadido" });
+//     } catch (error) {
+//         res.status(500);//error de lado del servidor
+//         res.send(error.message);
+//     }
+// }
+
+
+var addPedido = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+    var connection, _req$body2, fecha, idMesa, products, productsb, hora, ci, pedido, result, busca, nroPedido, pay, result2, result3, result4, pay2, result22;
+
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.prev = 0;
+            _context8.next = 3;
             return (0, _database.getConnection)();
 
           case 3:
-            connection = _context6.sent;
-            _req$body = req.body, fecha = _req$body.fecha, idMesa = _req$body.idMesa, products = _req$body.products, hora = _req$body.hora;
+            connection = _context8.sent;
+            _req$body2 = req.body, fecha = _req$body2.fecha, idMesa = _req$body2.idMesa, products = _req$body2.products, productsb = _req$body2.productsb, hora = _req$body2.hora, ci = _req$body2.ci;
             console.log("Datos para registro del pedido");
             console.log(fecha);
             console.log(idMesa);
             console.log(hora);
+            console.log(ci);
+            console.log(products);
+            console.log(productsb);
             pedido = {
               fecha: fecha,
               hora: hora,
               idMesa: idMesa,
-              habilitado: 0
+              habilitado: 0,
+              ciCliente: ci
             };
-            _context6.next = 12;
+            _context8.next = 15;
             return connection.query('INSERT INTO pedido SET ?', pedido);
 
-          case 12:
-            result = _context6.sent;
+          case 15:
+            result = _context8.sent;
             console.log(result);
-            _context6.next = 16;
+            _context8.next = 19;
             return connection.query('SELECT nroPedido FROM pedido WHERE fecha LIKE ? AND hora LIKE ? AND idMesa LIKE ?', [fecha, hora, idMesa]);
 
-          case 16:
-            busca = _context6.sent;
+          case 19:
+            busca = _context8.sent;
             console.log("busca");
             nroPedido = busca[0].nroPedido;
             console.log(nroPedido);
@@ -245,57 +384,401 @@ var addPedido = /*#__PURE__*/function () {
               cantidad: ""
             };
             products.forEach( /*#__PURE__*/function () {
-              var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(element) {
-                return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+              var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(element) {
+                return _regeneratorRuntime().wrap(function _callee6$(_context6) {
                   while (1) {
-                    switch (_context5.prev = _context5.next) {
+                    switch (_context6.prev = _context6.next) {
                       case 0:
                         pay.idProducto = element.idProducto;
                         pay.cantidad = element.cantidad;
                         pay.nroPedido = nroPedido;
                         console.log(pay);
-                        _context5.next = 6;
+                        _context6.next = 6;
                         return connection.query('INSERT INTO adquiere SET ?', pay);
 
                       case 6:
-                        result2 = _context5.sent;
+                        result2 = _context6.sent;
                         console.log(result2);
+                        _context6.next = 10;
+                        return connection.query('SELECT stock FROM plato WHERE idProducto = ?', element.idProducto);
+
+                      case 10:
+                        result3 = _context6.sent;
+                        console.log("Stock del producto ", result3[0].stock);
+                        _context6.next = 14;
+                        return connection.query('UPDATE plato SET stock=? WHERE idProducto=?', [result3[0].stock - element.cantidad, element.idProducto]);
+
+                      case 14:
+                        result4 = _context6.sent;
+                        console.log(result4);
+
+                      case 16:
+                      case "end":
+                        return _context6.stop();
+                    }
+                  }
+                }, _callee6);
+              }));
+
+              return function (_x13) {
+                return _ref7.apply(this, arguments);
+              };
+            }());
+            pay2 = {
+              idProducto: "",
+              nroPedido: "",
+              cantidad: ""
+            };
+            productsb.forEach( /*#__PURE__*/function () {
+              var _ref8 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(element) {
+                return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+                  while (1) {
+                    switch (_context7.prev = _context7.next) {
+                      case 0:
+                        pay2.idProducto = element.idProducto;
+                        pay2.cantidad = element.cantidad;
+                        pay2.nroPedido = nroPedido;
+                        console.log(pay2);
+                        _context7.next = 6;
+                        return connection.query('INSERT INTO adquiere SET ?', pay2);
+
+                      case 6:
+                        result22 = _context7.sent;
+                        console.log(result22);
 
                       case 8:
                       case "end":
-                        return _context5.stop();
+                        return _context7.stop();
                     }
                   }
-                }, _callee5);
+                }, _callee7);
               }));
 
-              return function (_x11) {
-                return _ref6.apply(this, arguments);
+              return function (_x14) {
+                return _ref8.apply(this, arguments);
               };
             }());
             res.json({
               message: "pedido añadido"
             });
-            _context6.next = 29;
+            _context8.next = 34;
             break;
 
-          case 25:
-            _context6.prev = 25;
-            _context6.t0 = _context6["catch"](0);
+          case 30:
+            _context8.prev = 30;
+            _context8.t0 = _context8["catch"](0);
             res.status(500); //error de lado del servidor
 
-            res.send(_context6.t0.message);
+            res.send(_context8.t0.message);
 
-          case 29:
+          case 34:
           case "end":
-            return _context6.stop();
+            return _context8.stop();
         }
       }
-    }, _callee6, null, [[0, 25]]);
+    }, _callee8, null, [[0, 30]]);
   }));
 
-  return function addPedido(_x9, _x10) {
-    return _ref5.apply(this, arguments);
+  return function addPedido(_x11, _x12) {
+    return _ref6.apply(this, arguments);
+  };
+}(); //desde aqui alv todo haha
+//obteniendo pedidos del cliente por su ci
+
+
+var getPedidosCliente = /*#__PURE__*/function () {
+  var _ref9 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
+    var ci, connection, result;
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
+      while (1) {
+        switch (_context9.prev = _context9.next) {
+          case 0:
+            _context9.prev = 0;
+            ci = req.params.ci;
+            _context9.next = 4;
+            return (0, _database.getConnection)();
+
+          case 4:
+            connection = _context9.sent;
+            _context9.next = 7;
+            return connection.query("SELECT xped.nroPedido,xped.fecha,xped.idMesa,xmes.nrosillas,xped.ciCliente,xped.habilitado FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND ciCliente =  ? AND xped.fecha = (SELECT DATE(NOW()) AS fecha)", ci);
+
+          case 7:
+            result = _context9.sent;
+            console.log(result);
+            res.json(result);
+            _context9.next = 16;
+            break;
+
+          case 12:
+            _context9.prev = 12;
+            _context9.t0 = _context9["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context9.t0.message);
+
+          case 16:
+          case "end":
+            return _context9.stop();
+        }
+      }
+    }, _callee9, null, [[0, 12]]);
+  }));
+
+  return function getPedidosCliente(_x15, _x16) {
+    return _ref9.apply(this, arguments);
+  };
+}(); //obteniendo pedidos para el camarero y este los pueda habilitar
+
+
+var getPedidosCamarero = /*#__PURE__*/function () {
+  var _ref10 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res) {
+    var connection, result;
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
+      while (1) {
+        switch (_context10.prev = _context10.next) {
+          case 0:
+            _context10.prev = 0;
+            _context10.next = 3;
+            return (0, _database.getConnection)();
+
+          case 3:
+            connection = _context10.sent;
+            _context10.next = 6;
+            return connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '0' AND xped.fecha = (SELECT DATE(NOW()) AS fecha)");
+
+          case 6:
+            result = _context10.sent;
+            console.log(result);
+            res.json(result);
+            _context10.next = 15;
+            break;
+
+          case 11:
+            _context10.prev = 11;
+            _context10.t0 = _context10["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context10.t0.message);
+
+          case 15:
+          case "end":
+            return _context10.stop();
+        }
+      }
+    }, _callee10, null, [[0, 11]]);
+  }));
+
+  return function getPedidosCamarero(_x17, _x18) {
+    return _ref10.apply(this, arguments);
+  };
+}(); //obteniendo pedidos para el chef y este los pueda despachar
+
+
+var getPedidosChef = /*#__PURE__*/function () {
+  var _ref11 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res) {
+    var connection, result;
+    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
+      while (1) {
+        switch (_context11.prev = _context11.next) {
+          case 0:
+            _context11.prev = 0;
+            _context11.next = 3;
+            return (0, _database.getConnection)();
+
+          case 3:
+            connection = _context11.sent;
+            _context11.next = 6;
+            return connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '1' AND xped.fecha = (SELECT DATE(NOW()) AS fecha)");
+
+          case 6:
+            result = _context11.sent;
+            console.log(result);
+            res.json(result);
+            _context11.next = 15;
+            break;
+
+          case 11:
+            _context11.prev = 11;
+            _context11.t0 = _context11["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context11.t0.message);
+
+          case 15:
+          case "end":
+            return _context11.stop();
+        }
+      }
+    }, _callee11, null, [[0, 11]]);
+  }));
+
+  return function getPedidosChef(_x19, _x20) {
+    return _ref11.apply(this, arguments);
+  };
+}(); //para actualizar el pedido que el camarero adicionara o eliminara
+
+
+var actualizaPedido = /*#__PURE__*/function () {
+  var _ref12 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee14(req, res) {
+    var connection, _req$body3, fecha, idMesa, products, productsb, hora, ciCliente, ciCamarero, nroPedido, eli1, eli2, pedido, result, pay, result2, result3, result4, pay2, result22;
+
+    return _regeneratorRuntime().wrap(function _callee14$(_context14) {
+      while (1) {
+        switch (_context14.prev = _context14.next) {
+          case 0:
+            _context14.prev = 0;
+            _context14.next = 3;
+            return (0, _database.getConnection)();
+
+          case 3:
+            connection = _context14.sent;
+            _req$body3 = req.body, fecha = _req$body3.fecha, idMesa = _req$body3.idMesa, products = _req$body3.products, productsb = _req$body3.productsb, hora = _req$body3.hora, ciCliente = _req$body3.ciCliente, ciCamarero = _req$body3.ciCamarero, nroPedido = _req$body3.nroPedido;
+            console.log("Datos para registro del pedido");
+            console.log(fecha);
+            console.log(idMesa);
+            console.log(hora);
+            console.log(ciCliente, ciCamarero);
+            console.log(products);
+            console.log(productsb);
+            console.log(nroPedido); //eliminamos los registros tenidos anteriormente y creamos un nuevo pedido
+
+            _context14.next = 15;
+            return connection.query('DELETE FROM adquiere WHERE nroPedido = ?', nroPedido);
+
+          case 15:
+            eli1 = _context14.sent;
+            console.log(eli1);
+            _context14.next = 19;
+            return connection.query('DELETE FROM pedido WHERE nroPedido = ?', nroPedido);
+
+          case 19:
+            eli2 = _context14.sent;
+            console.log(eli2);
+            console.log("despues de eliminar"); //---------------------------------------------------------------------------
+
+            pedido = {
+              fecha: fecha,
+              hora: hora,
+              idMesa: idMesa,
+              habilitado: 1,
+              ciCliente: ciCliente,
+              ciCamarero: ciCamarero,
+              nroPedido: nroPedido
+            };
+            _context14.next = 25;
+            return connection.query('INSERT INTO pedido SET ?', pedido);
+
+          case 25:
+            result = _context14.sent;
+            console.log(result);
+            /*products.forEach(element => {
+                console.log(element.idProducto,element.cantidad); 
+            });*/
+
+            pay = {
+              idProducto: "",
+              nroPedido: "",
+              cantidad: ""
+            };
+            products.forEach( /*#__PURE__*/function () {
+              var _ref13 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(element) {
+                return _regeneratorRuntime().wrap(function _callee12$(_context12) {
+                  while (1) {
+                    switch (_context12.prev = _context12.next) {
+                      case 0:
+                        pay.idProducto = element.idproducto;
+                        pay.cantidad = element.cantidad;
+                        pay.nroPedido = nroPedido;
+                        console.log(pay);
+                        _context12.next = 6;
+                        return connection.query('INSERT INTO adquiere SET ?', pay);
+
+                      case 6:
+                        result2 = _context12.sent;
+                        console.log(result2);
+                        _context12.next = 10;
+                        return connection.query('SELECT stock FROM plato WHERE idProducto = ?', element.idproducto);
+
+                      case 10:
+                        result3 = _context12.sent;
+                        console.log("Stock del producto ", result3[0].stock);
+                        _context12.next = 14;
+                        return connection.query('UPDATE plato SET stock=? WHERE idProducto=?', [result3[0].stock - element.cantidad, element.idproducto]);
+
+                      case 14:
+                        result4 = _context12.sent;
+                        console.log(result4);
+
+                      case 16:
+                      case "end":
+                        return _context12.stop();
+                    }
+                  }
+                }, _callee12);
+              }));
+
+              return function (_x23) {
+                return _ref13.apply(this, arguments);
+              };
+            }());
+            pay2 = {
+              idProducto: "",
+              nroPedido: "",
+              cantidad: ""
+            };
+            productsb.forEach( /*#__PURE__*/function () {
+              var _ref14 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee13(element) {
+                return _regeneratorRuntime().wrap(function _callee13$(_context13) {
+                  while (1) {
+                    switch (_context13.prev = _context13.next) {
+                      case 0:
+                        pay2.idProducto = element.idproducto;
+                        pay2.cantidad = element.cantidad;
+                        pay2.nroPedido = nroPedido;
+                        console.log(pay2);
+                        _context13.next = 6;
+                        return connection.query('INSERT INTO adquiere SET ?', pay2);
+
+                      case 6:
+                        result22 = _context13.sent;
+                        console.log(result22);
+
+                      case 8:
+                      case "end":
+                        return _context13.stop();
+                    }
+                  }
+                }, _callee13);
+              }));
+
+              return function (_x24) {
+                return _ref14.apply(this, arguments);
+              };
+            }());
+            res.json({
+              message: "pedido modificado"
+            });
+            _context14.next = 38;
+            break;
+
+          case 34:
+            _context14.prev = 34;
+            _context14.t0 = _context14["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context14.t0.message);
+
+          case 38:
+          case "end":
+            return _context14.stop();
+        }
+      }
+    }, _callee14, null, [[0, 34]]);
+  }));
+
+  return function actualizaPedido(_x21, _x22) {
+    return _ref12.apply(this, arguments);
   };
 }();
 
@@ -304,6 +787,11 @@ var metodos = {
   getPedidosHabilitados: getPedidosHabilitados,
   getproductosPedido: getproductosPedido,
   enablePedido: enablePedido,
-  addPedido: addPedido
+  addPedido: addPedido,
+  getPedidosCliente: getPedidosCliente,
+  getPedidosCamarero: getPedidosCamarero,
+  getPedidosChef: getPedidosChef,
+  getPedido: getPedido,
+  actualizaPedido: actualizaPedido
 };
 exports.metodos = metodos;

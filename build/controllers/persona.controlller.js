@@ -637,7 +637,7 @@ var asignaRol = /*#__PURE__*/function () {
 
 var loginUsuario = /*#__PURE__*/function () {
   var _ref9 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
-    var _req$body5, username, password, connection, result, ci, token, tipo, resultCliente, rcl, resultChef, rch, resultCamarero, rca;
+    var _req$body5, username, password, connection, result, ci, token, tipo, resultCliente, rcl, resultChef, rch, resultCajero, rcaj, resultCamarero, rca;
 
     return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) {
@@ -658,7 +658,7 @@ var loginUsuario = /*#__PURE__*/function () {
             result = _context9.sent;
 
             if (!(result.length > 0)) {
-              _context9.next = 40;
+              _context9.next = 47;
               break;
             }
 
@@ -672,7 +672,7 @@ var loginUsuario = /*#__PURE__*/function () {
 
             });
             console.log(result);
-            tipo = ""; //const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
+            tipo = "administrador"; //const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
 
             _context9.next = 17;
             return connection.query("SELECT ciCliente FROM cliente");
@@ -701,11 +701,26 @@ var loginUsuario = /*#__PURE__*/function () {
               if (element.ciChef === ci) {
                 tipo = "chef";
               }
-            });
+            }); //agregado para cajero
+
             _context9.next = 31;
-            return connection.query("SELECT ciCamarero FROM camarero");
+            return connection.query("SELECT ciCajero FROM cajero");
 
           case 31:
+            resultCajero = _context9.sent;
+            console.log(resultCajero);
+            rcaj = Object.values(JSON.parse(JSON.stringify(resultCajero)));
+            console.log(rcaj);
+            rcaj.forEach(function (element) {
+              if (element.ciCajero === ci) {
+                tipo = "cajero";
+              }
+            }); //agregado para cajero
+
+            _context9.next = 38;
+            return connection.query("SELECT ciCamarero FROM camarero");
+
+          case 38:
             resultCamarero = _context9.sent;
             console.log(resultCamarero);
             rca = Object.values(JSON.parse(JSON.stringify(resultCamarero)));
@@ -722,32 +737,32 @@ var loginUsuario = /*#__PURE__*/function () {
               username: username,
               ci: ci
             });
-            _context9.next = 42;
+            _context9.next = 49;
             break;
 
-          case 40:
+          case 47:
             console.log(result);
             res.status(400).json({
               message: "Credenciales Incorrectas"
             });
 
-          case 42:
-            _context9.next = 48;
+          case 49:
+            _context9.next = 55;
             break;
 
-          case 44:
-            _context9.prev = 44;
+          case 51:
+            _context9.prev = 51;
             _context9.t0 = _context9["catch"](0);
             res.status(500); //error de lado del servidor
 
             res.send(_context9.t0.message);
 
-          case 48:
+          case 55:
           case "end":
             return _context9.stop();
         }
       }
-    }, _callee9, null, [[0, 44]]);
+    }, _callee9, null, [[0, 51]]);
   }));
 
   return function loginUsuario(_x17, _x18) {

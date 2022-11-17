@@ -9,8 +9,12 @@ var _express = require("express");
 
 var _facturaController = require("../controllers/factura.controller.js");
 
-var router = (0, _express.Router)();
-router.get('/', _facturaController.metodos.getFacturas); //para obtener las facturas por ci del cliente
+var router = (0, _express.Router)(); //PARA OBTENER EL PDF
+
+router.get('/downPdf/:idFactura', _facturaController.metodos.getPdf);
+router.get('/', _facturaController.metodos.getFacturas); //obteniendo facturas para el cajero
+
+router.get('/pedidosCajero/', _facturaController.metodos.getPedidosCajero); //para obtener las facturas por ci del cliente
 
 router.get('/:ciCliente', _facturaController.metodos.getFacturasCliente); //para adicionar los pedidos a una determinada factura
 

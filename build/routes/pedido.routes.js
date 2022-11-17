@@ -19,6 +19,14 @@ router.get('/productos/:nroPedido', _pedidoController.metodos.getproductosPedido
 
 router.put('/enabled/:nroPedido', _pedidoController.metodos.enablePedido); //para llenar datos en el pedido
 
-router.post('/', _pedidoController.metodos.addPedido);
+router.post('/', _pedidoController.metodos.addPedido); //para listar los pedidos del cliente
+
+router.get('/pedidosCliente/:ci', _pedidoController.metodos.getPedidosCliente); //para listar los pedidos para el chef
+
+router.get('/pedidosChef/', _pedidoController.metodos.getPedidosChef); //para listar los pedidos para el camarero
+
+router.get('/pedidosCamarero/', _pedidoController.metodos.getPedidosCamarero);
+router.get('/:id', _pedidoController.metodos.getPedido);
+router.post('/actualiza/', _pedidoController.metodos.actualizaPedido);
 var _default = router;
 exports["default"] = _default;

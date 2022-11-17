@@ -117,7 +117,7 @@ var getIngredientesPlato = /*#__PURE__*/function () {
           case 4:
             connection = _context3.sent;
             _context3.next = 7;
-            return connection.query("SELECT xing.nombre,xing.tipo FROM contiene xcont,ingrediente xing WHERE xcont.idIng = xing.idIng  AND idProducto =?", idProducto);
+            return connection.query("SELECT xing.idIng,xing.nombre,xing.tipo FROM contiene xcont,ingrediente xing WHERE xcont.idIng = xing.idIng  AND idProducto =?", idProducto);
 
           case 7:
             result = _context3.sent;
@@ -146,21 +146,171 @@ var getIngredientesPlato = /*#__PURE__*/function () {
   };
 }();
 
-var addPlato = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var connection, _req$body, nombre, precio, descripcion, stock, ciudadProv, image, idProducto, producto, result, busca, plato, result2;
+var addIngredientesPlato = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+    var _req$body, idProducto, ingredients, connection, pay, result;
 
-    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
       while (1) {
-        switch (_context4.prev = _context4.next) {
+        switch (_context5.prev = _context5.next) {
           case 0:
-            _context4.prev = 0;
-            _context4.next = 3;
+            _context5.prev = 0;
+            _req$body = req.body, idProducto = _req$body.idProducto, ingredients = _req$body.ingredients;
+            _context5.next = 4;
+            return (0, _database.getConnection)();
+
+          case 4:
+            connection = _context5.sent;
+            pay = {
+              idProducto: idProducto,
+              idIng: ""
+            };
+            ingredients.forEach( /*#__PURE__*/function () {
+              var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(element) {
+                return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+                  while (1) {
+                    switch (_context4.prev = _context4.next) {
+                      case 0:
+                        pay.idIng = element.idIng;
+                        console.log(pay);
+                        _context4.next = 4;
+                        return connection.query('INSERT INTO contiene SET ?', pay);
+
+                      case 4:
+                        result = _context4.sent;
+                        console.log(result);
+
+                      case 6:
+                      case "end":
+                        return _context4.stop();
+                    }
+                  }
+                }, _callee4);
+              }));
+
+              return function (_x9) {
+                return _ref5.apply(this, arguments);
+              };
+            }());
+            res.json({
+              message: "Ingredientes añadidos"
+            });
+            _context5.next = 14;
+            break;
+
+          case 10:
+            _context5.prev = 10;
+            _context5.t0 = _context5["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context5.t0.message);
+
+          case 14:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[0, 10]]);
+  }));
+
+  return function addIngredientesPlato(_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var updateIngredientesPlato = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
+    var _req$body2, idProducto, ingredients, connection, eli1, pay, result;
+
+    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+      while (1) {
+        switch (_context7.prev = _context7.next) {
+          case 0:
+            _context7.prev = 0;
+            _req$body2 = req.body, idProducto = _req$body2.idProducto, ingredients = _req$body2.ingredients;
+            _context7.next = 4;
+            return (0, _database.getConnection)();
+
+          case 4:
+            connection = _context7.sent;
+            _context7.next = 7;
+            return connection.query('DELETE FROM contiene WHERE idProducto = ?', idProducto);
+
+          case 7:
+            eli1 = _context7.sent;
+            console.log(eli1);
+            pay = {
+              idProducto: idProducto,
+              idIng: ""
+            };
+            ingredients.forEach( /*#__PURE__*/function () {
+              var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(element) {
+                return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+                  while (1) {
+                    switch (_context6.prev = _context6.next) {
+                      case 0:
+                        pay.idIng = element.idIng;
+                        console.log(pay);
+                        _context6.next = 4;
+                        return connection.query('INSERT INTO contiene SET ?', pay);
+
+                      case 4:
+                        result = _context6.sent;
+                        console.log(result);
+
+                      case 6:
+                      case "end":
+                        return _context6.stop();
+                    }
+                  }
+                }, _callee6);
+              }));
+
+              return function (_x12) {
+                return _ref7.apply(this, arguments);
+              };
+            }());
+            res.json({
+              message: "Ingredientes actualizados"
+            });
+            _context7.next = 18;
+            break;
+
+          case 14:
+            _context7.prev = 14;
+            _context7.t0 = _context7["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context7.t0.message);
+
+          case 18:
+          case "end":
+            return _context7.stop();
+        }
+      }
+    }, _callee7, null, [[0, 14]]);
+  }));
+
+  return function updateIngredientesPlato(_x10, _x11) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
+var addPlato = /*#__PURE__*/function () {
+  var _ref8 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+    var connection, _req$body3, nombre, precio, descripcion, stock, ciudadProv, image, idProducto, producto, result, busca, plato, result2;
+
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.prev = 0;
+            _context8.next = 3;
             return (0, _database.getConnection)();
 
           case 3:
-            connection = _context4.sent;
-            _req$body = req.body, nombre = _req$body.nombre, precio = _req$body.precio, descripcion = _req$body.descripcion, stock = _req$body.stock, ciudadProv = _req$body.ciudadProv, image = _req$body.image;
+            connection = _context8.sent;
+            _req$body3 = req.body, nombre = _req$body3.nombre, precio = _req$body3.precio, descripcion = _req$body3.descripcion, stock = _req$body3.stock, ciudadProv = _req$body3.ciudadProv, image = _req$body3.image;
             console.log(nombre, precio, descripcion, stock, ciudadProv);
             idProducto = "";
             producto = {
@@ -168,18 +318,18 @@ var addPlato = /*#__PURE__*/function () {
               descripcion: descripcion,
               nombre: nombre
             };
-            _context4.next = 10;
+            _context8.next = 10;
             return connection.query('INSERT INTO producto SET ?', producto);
 
           case 10:
-            result = _context4.sent;
+            result = _context8.sent;
             console.log(result);
             console.log("inserto producto");
-            _context4.next = 15;
+            _context8.next = 15;
             return connection.query('SELECT idProducto FROM producto WHERE nombre LIKE ? AND precio LIKE ? AND descripcion LIKE ?', [nombre, precio, descripcion]);
 
           case 15:
-            busca = _context4.sent;
+            busca = _context8.sent;
             idProducto = busca[0].idProducto;
             plato = {
               stock: stock,
@@ -187,143 +337,143 @@ var addPlato = /*#__PURE__*/function () {
               idProducto: idProducto,
               image: image
             };
-            _context4.next = 20;
+            _context8.next = 20;
             return connection.query('INSERT INTO plato SET ?', plato);
 
           case 20:
-            result2 = _context4.sent;
+            result2 = _context8.sent;
             console.log(result2);
             res.json({
               message: "plato añadido"
             });
-            _context4.next = 29;
+            _context8.next = 29;
             break;
 
           case 25:
-            _context4.prev = 25;
-            _context4.t0 = _context4["catch"](0);
+            _context8.prev = 25;
+            _context8.t0 = _context8["catch"](0);
             res.status(500); //error de lado del servidor
 
-            res.send(_context4.t0.message);
+            res.send(_context8.t0.message);
 
           case 29:
           case "end":
-            return _context4.stop();
+            return _context8.stop();
         }
       }
-    }, _callee4, null, [[0, 25]]);
+    }, _callee8, null, [[0, 25]]);
   }));
 
-  return function addPlato(_x7, _x8) {
-    return _ref4.apply(this, arguments);
+  return function addPlato(_x13, _x14) {
+    return _ref8.apply(this, arguments);
   };
 }();
 
 var addStock = /*#__PURE__*/function () {
-  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+  var _ref9 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee9(req, res) {
     var idProducto, stock, plato, connection, result;
-    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+    return _regeneratorRuntime().wrap(function _callee9$(_context9) {
       while (1) {
-        switch (_context5.prev = _context5.next) {
+        switch (_context9.prev = _context9.next) {
           case 0:
-            _context5.prev = 0;
+            _context9.prev = 0;
             idProducto = req.params.idProducto;
             stock = req.body.stock;
             plato = {
               stock: stock,
               idProducto: idProducto
             };
-            _context5.next = 6;
+            _context9.next = 6;
             return (0, _database.getConnection)();
 
           case 6:
-            connection = _context5.sent;
-            _context5.next = 9;
+            connection = _context9.sent;
+            _context9.next = 9;
             return connection.query("UPDATE plato SET ? WHERE idProducto = ?", [plato, idProducto]);
 
           case 9:
-            result = _context5.sent;
+            result = _context9.sent;
             console.log(result);
             res.json({
               message: "stock del plato actualizado"
             });
-            _context5.next = 18;
+            _context9.next = 18;
             break;
 
           case 14:
-            _context5.prev = 14;
-            _context5.t0 = _context5["catch"](0);
+            _context9.prev = 14;
+            _context9.t0 = _context9["catch"](0);
             res.status(500); //error de lado del servidor
 
-            res.send(_context5.t0.message);
+            res.send(_context9.t0.message);
 
           case 18:
           case "end":
-            return _context5.stop();
+            return _context9.stop();
         }
       }
-    }, _callee5, null, [[0, 14]]);
+    }, _callee9, null, [[0, 14]]);
   }));
 
-  return function addStock(_x9, _x10) {
-    return _ref5.apply(this, arguments);
+  return function addStock(_x15, _x16) {
+    return _ref9.apply(this, arguments);
   };
 }();
 
 var deletePlato = /*#__PURE__*/function () {
-  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+  var _ref10 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee10(req, res) {
     var idProducto, connection, result;
-    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+    return _regeneratorRuntime().wrap(function _callee10$(_context10) {
       while (1) {
-        switch (_context6.prev = _context6.next) {
+        switch (_context10.prev = _context10.next) {
           case 0:
-            _context6.prev = 0;
+            _context10.prev = 0;
             idProducto = req.params.idProducto;
-            _context6.next = 4;
+            _context10.next = 4;
             return (0, _database.getConnection)();
 
           case 4:
-            connection = _context6.sent;
-            _context6.next = 7;
+            connection = _context10.sent;
+            _context10.next = 7;
             return connection.query("DELETE FROM producto WHERE idProducto=?", idProducto);
 
           case 7:
-            result = _context6.sent;
+            result = _context10.sent;
             console.log(result);
             res.json(result);
-            _context6.next = 16;
+            _context10.next = 16;
             break;
 
           case 12:
-            _context6.prev = 12;
-            _context6.t0 = _context6["catch"](0);
+            _context10.prev = 12;
+            _context10.t0 = _context10["catch"](0);
             res.status(500); //error de lado del servidor
 
-            res.send(_context6.t0.message);
+            res.send(_context10.t0.message);
 
           case 16:
           case "end":
-            return _context6.stop();
+            return _context10.stop();
         }
       }
-    }, _callee6, null, [[0, 12]]);
+    }, _callee10, null, [[0, 12]]);
   }));
 
-  return function deletePlato(_x11, _x12) {
-    return _ref6.apply(this, arguments);
+  return function deletePlato(_x17, _x18) {
+    return _ref10.apply(this, arguments);
   };
 }();
 
 var updatePlato = /*#__PURE__*/function () {
-  var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(req, res) {
-    var _req$body2, nombre, precio, descripcion, stock, ciudadProv, idProducto, image, producto, plato, connection, result, result2;
+  var _ref11 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee11(req, res) {
+    var _req$body4, nombre, precio, descripcion, stock, ciudadProv, idProducto, image, producto, plato, connection, result, result2;
 
-    return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+    return _regeneratorRuntime().wrap(function _callee11$(_context11) {
       while (1) {
-        switch (_context7.prev = _context7.next) {
+        switch (_context11.prev = _context11.next) {
           case 0:
-            _context7.prev = 0;
-            _req$body2 = req.body, nombre = _req$body2.nombre, precio = _req$body2.precio, descripcion = _req$body2.descripcion, stock = _req$body2.stock, ciudadProv = _req$body2.ciudadProv, idProducto = _req$body2.idProducto, image = _req$body2.image;
+            _context11.prev = 0;
+            _req$body4 = req.body, nombre = _req$body4.nombre, precio = _req$body4.precio, descripcion = _req$body4.descripcion, stock = _req$body4.stock, ciudadProv = _req$body4.ciudadProv, idProducto = _req$body4.idProducto, image = _req$body4.image;
             producto = {
               nombre: nombre,
               precio: precio,
@@ -337,89 +487,90 @@ var updatePlato = /*#__PURE__*/function () {
               image: image
             }; //const result=await connection.query("UPDATE usuario SET ? WHERE ci = ?",[usuario, ci]);
 
-            _context7.next = 6;
+            _context11.next = 6;
             return (0, _database.getConnection)();
 
           case 6:
-            connection = _context7.sent;
-            _context7.next = 9;
+            connection = _context11.sent;
+            _context11.next = 9;
             return connection.query('UPDATE producto SET ? WHERE idProducto=?', [producto, idProducto]);
 
           case 9:
-            result = _context7.sent;
-            _context7.next = 12;
+            result = _context11.sent;
+            _context11.next = 12;
             return connection.query('UPDATE plato SET ? WHERE idProducto=?', [plato, idProducto]);
 
           case 12:
-            result2 = _context7.sent;
+            result2 = _context11.sent;
             console.log(result);
             console.log(result2);
             res.json({
               message: "plato actualizado"
             });
-            _context7.next = 22;
+            _context11.next = 22;
             break;
 
           case 18:
-            _context7.prev = 18;
-            _context7.t0 = _context7["catch"](0);
+            _context11.prev = 18;
+            _context11.t0 = _context11["catch"](0);
             res.status(500); //error de lado del servidor
 
-            res.send(_context7.t0.message);
+            res.send(_context11.t0.message);
 
           case 22:
           case "end":
-            return _context7.stop();
+            return _context11.stop();
         }
       }
-    }, _callee7, null, [[0, 18]]);
+    }, _callee11, null, [[0, 18]]);
   }));
 
-  return function updatePlato(_x13, _x14) {
-    return _ref7.apply(this, arguments);
+  return function updatePlato(_x19, _x20) {
+    return _ref11.apply(this, arguments);
   };
 }();
 
 var getPlatosPedido = /*#__PURE__*/function () {
-  var _ref8 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+  var _ref12 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee12(req, res) {
     var connection, result;
-    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+    return _regeneratorRuntime().wrap(function _callee12$(_context12) {
       while (1) {
-        switch (_context8.prev = _context8.next) {
+        switch (_context12.prev = _context12.next) {
           case 0:
-            _context8.prev = 0;
-            _context8.next = 3;
+            _context12.prev = 0;
+            console.log("OBTENIENDO : getPlatosPedido");
+            _context12.next = 4;
             return (0, _database.getConnection)();
 
-          case 3:
-            connection = _context8.sent;
-            _context8.next = 6;
+          case 4:
+            connection = _context12.sent;
+            _context12.next = 7;
             return connection.query("SELECT xpla.idProducto,xpla.stock,xpla.ciudadProv,xpro.nombre,xpro.descripcion,xpro.precio,xpla.image FROM plato xpla, producto xpro WHERE xpla.idProducto = xpro.idProducto AND xpla.stock>0");
 
-          case 6:
-            result = _context8.sent;
+          case 7:
+            result = _context12.sent;
             console.log(result);
             res.json(result);
-            _context8.next = 15;
+            _context12.next = 16;
             break;
 
-          case 11:
-            _context8.prev = 11;
-            _context8.t0 = _context8["catch"](0);
+          case 12:
+            _context12.prev = 12;
+            _context12.t0 = _context12["catch"](0);
             res.status(500); //error de lado del servidor
 
-            res.send(_context8.t0.message);
+            res.send(_context12.t0.message);
 
-          case 15:
+          case 16:
           case "end":
-            return _context8.stop();
+            return _context12.stop();
         }
       }
-    }, _callee8, null, [[0, 11]]);
+    }, _callee12, null, [[0, 12]]);
   }));
 
-  return function getPlatosPedido(_x15, _x16) {
-    return _ref8.apply(this, arguments);
+  return function getPlatosPedido(_x21, _x22) {
+    return _ref12.apply(this, arguments);
   };
 }();
 
@@ -431,6 +582,8 @@ var metodos = {
   addStock: addStock,
   deletePlato: deletePlato,
   updatePlato: updatePlato,
-  getPlatosPedido: getPlatosPedido
+  getPlatosPedido: getPlatosPedido,
+  addIngredientesPlato: addIngredientesPlato,
+  updateIngredientesPlato: updateIngredientesPlato
 };
 exports.metodos = metodos;

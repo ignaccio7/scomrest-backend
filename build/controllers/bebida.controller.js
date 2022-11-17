@@ -284,11 +284,56 @@ var updateBebida = /*#__PURE__*/function () {
   };
 }();
 
+var getBebidasPedido = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+    var connection, result;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.prev = 0;
+            console.log("OBTENIENDO : getBebidasPedido");
+            _context6.next = 4;
+            return (0, _database.getConnection)();
+
+          case 4:
+            connection = _context6.sent;
+            _context6.next = 7;
+            return connection.query("SELECT xbe.idProducto,xbe.marca,xbe.tipo,xbe.grado_alcoholico,xpro.nombre,xpro.descripcion,xpro.precio,xbe.image FROM bebida xbe, producto xpro WHERE xbe.idProducto = xpro.idProducto");
+
+          case 7:
+            result = _context6.sent;
+            console.log(result);
+            res.json(result);
+            _context6.next = 16;
+            break;
+
+          case 12:
+            _context6.prev = 12;
+            _context6.t0 = _context6["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context6.t0.message);
+
+          case 16:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, null, [[0, 12]]);
+  }));
+
+  return function getBebidasPedido(_x11, _x12) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
 var metodos = {
   getBebidas: getBebidas,
   getBebida: getBebida,
   addBebida: addBebida,
   deleteBebida: deleteBebida,
-  updateBebida: updateBebida
+  updateBebida: updateBebida,
+  getBebidasPedido: getBebidasPedido
 };
 exports.metodos = metodos;

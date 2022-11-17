@@ -9,7 +9,9 @@ var _express = require("express");
 
 var _bebidaController = require("../controllers/bebida.controller.js");
 
-var router = (0, _express.Router)();
+var router = (0, _express.Router)(); //obtener bebidas para el pedido
+
+router.get('/pedido/', _bebidaController.metodos.getBebidasPedido);
 router.get('/', _bebidaController.metodos.getBebidas);
 router.get('/:idProducto', _bebidaController.metodos.getBebida);
 router.post('/', _bebidaController.metodos.addBebida); //para eliminar el plato

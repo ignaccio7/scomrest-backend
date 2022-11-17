@@ -30,7 +30,7 @@ var _config = _interopRequireDefault(require("./config.js"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 //minuto20 https://www.youtube.com/watch?v=lV7mxivGX_I&t=7125s
-console.log(_config["default"].port);
+console.log(_config["default"].port); //PARA EL CORS
 
 var cors = require('cors');
 

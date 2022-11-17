@@ -15,97 +15,166 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
-var getFacturas = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-    var connection, result;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
+//PARA DESCARGAR EL PDF 
+var pdf = require('html-pdf'); //PARA LA CONEXION
+
+
+var getPdf = /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
       while (1) {
-        switch (_context.prev = _context.next) {
+        switch (_context3.prev = _context3.next) {
           case 0:
-            _context.prev = 0;
-            _context.next = 3;
-            return (0, _database.getConnection)();
+            _context3.prev = 0;
+            return _context3.delegateYield( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+              var connection, idFactura, result, result2, result3, result4, result5, vecNroPedidos, content, index, el;
+              return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+                while (1) {
+                  switch (_context2.prev = _context2.next) {
+                    case 0:
+                      _context2.next = 2;
+                      return (0, _database.getConnection)();
 
-          case 3:
-            connection = _context.sent;
-            _context.next = 6;
-            return connection.query("SELECT * FROM factura");
+                    case 2:
+                      connection = _context2.sent;
+                      idFactura = req.params.idFactura;
+                      _context2.next = 6;
+                      return connection.query("SELECT xfac.* FROM factura xfac WHERE idFactura = ?", idFactura);
 
-          case 6:
-            result = _context.sent;
-            console.log(result);
-            res.json(result);
-            _context.next = 15;
+                    case 6:
+                      result = _context2.sent;
+                      _context2.next = 9;
+                      return connection.query("SELECT xusu.apPaterno as patCliente FROM factura xfac,usuario xusu WHERE xusu.ci = xfac.ciCliente AND idFactura = ?", idFactura);
+
+                    case 9:
+                      result2 = _context2.sent;
+                      _context2.next = 12;
+                      return connection.query("SELECT xusu.apPaterno as patCajero FROM factura xfac,usuario xusu WHERE xusu.ci = xfac.ciCajero AND idFactura = ?", idFactura);
+
+                    case 12:
+                      result3 = _context2.sent;
+                      _context2.next = 15;
+                      return connection.query("SELECT xped.nroPedido FROM pedido xped WHERE idFactura = ?", idFactura);
+
+                    case 15:
+                      result4 = _context2.sent;
+                      vecNroPedidos = [];
+                      console.log(result);
+                      console.log(JSON.stringify(result[0]));
+                      content = "<html>\n        <img src=\"archivePdf/logoscomSinfondo.png\" alt=\"no hay imagen\"> </br>\n        <h1>Factura NRO\xBA ".concat(idFactura, " </h1>\n        -------------------------------------------------------------<br/>\n            FECHA : ").concat(result[0].fecha, "<br/>\n            HORA : ").concat(result[0].hora, "<br/>\n            SE\xD1OR(ES)  : ").concat(result2[0].patCliente, "<br/>\n        -------------------------------------------------------------<br/>");
+                      console.log("LOS NUMEROS DE PEDIDOS SON");
+                      console.log(result4);
+                      result4.forEach( /*#__PURE__*/function () {
+                        var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(element) {
+                          return _regeneratorRuntime().wrap(function _callee$(_context) {
+                            while (1) {
+                              switch (_context.prev = _context.next) {
+                                case 0:
+                                  console.log(element.nroPedido);
+                                  vecNroPedidos.push(element.nroPedido); //content = content + `-${element.nroPedido}-<br/>`;
+
+                                case 2:
+                                case "end":
+                                  return _context.stop();
+                              }
+                            }
+                          }, _callee);
+                        }));
+
+                        return function (_x3) {
+                          return _ref2.apply(this, arguments);
+                        };
+                      }());
+                      console.log("LOS NUMEROS DE PEDIDOS SON");
+                      console.log("VECTOR DE PEDIDOS:", vecNroPedidos);
+                      content = content + "<table> <tr> <td>DESCRIPCION</td> <td>PRECIO</td> <td>CANTIDAD</td> <td>TOTAL</td> </tr>";
+                      index = 0;
+
+                    case 27:
+                      if (!(index < vecNroPedidos.length)) {
+                        _context2.next = 38;
+                        break;
+                      }
+
+                      el = vecNroPedidos[index];
+                      console.log("------NUMERO DE PEDIDO :", el);
+                      _context2.next = 32;
+                      return connection.query("SELECT xpro.nombre,xpro.precio,xadqui.cantidad FROM adquiere xadqui, producto xpro WHERE xadqui.idproducto = xpro.idproducto AND xadqui.nropedido = ?", el);
+
+                    case 32:
+                      result5 = _context2.sent;
+                      console.log(result5);
+                      result5.forEach(function (element) {
+                        console.log(element.nombre); //content = content + `-${element.nombre}-<br/>`;
+
+                        content = content + "<tr><td>-".concat(element.nombre, "</td><td>").concat(element.precio, "</td><td>").concat(element.cantidad, "</td><td>").concat(element.cantidad * element.precio, "</td></tr>");
+                      });
+
+                    case 35:
+                      index++;
+                      _context2.next = 27;
+                      break;
+
+                    case 38:
+                      content = content + "</table><br/>";
+                      content = content + "-------------------------------------------------------------<br/>\n            TOTAL A PAGAR  : ".concat(result[0].total, "<br/> \n            CAMBIO  : ").concat(result[0].cambio, "<br/> \n            USUARIO  : ").concat(result3[0].patCajero, "<br/> \n            </html>\n        ");
+                      _context2.t0 = pdf;
+                      _context2.next = 43;
+                      return content;
+
+                    case 43:
+                      _context2.t1 = _context2.sent;
+
+                      _context2.t0.create.call(_context2.t0, _context2.t1).toFile('./html-pdf.pdf', function (err, res) {
+                        if (err) {
+                          console.log(err);
+                        } else {
+                          console.log(res);
+                        }
+                      });
+
+                      _context2.next = 47;
+                      return console.log("hola");
+
+                    case 47:
+                      _context2.next = 49;
+                      return res.json({
+                        message: "hola mundo"
+                      });
+
+                    case 49:
+                    case "end":
+                      return _context2.stop();
+                  }
+                }
+              }, _callee2);
+            })(), "t0", 2);
+
+          case 2:
+            _context3.next = 7;
             break;
 
-          case 11:
-            _context.prev = 11;
-            _context.t0 = _context["catch"](0);
-            res.status(500); //error de lado del servidor
+          case 4:
+            _context3.prev = 4;
+            _context3.t1 = _context3["catch"](0);
+            console.log(_context3.t1);
 
-            res.send(_context.t0.message);
-
-          case 15:
+          case 7:
           case "end":
-            return _context.stop();
+            return _context3.stop();
         }
       }
-    }, _callee, null, [[0, 11]]);
+    }, _callee3, null, [[0, 4]]);
   }));
 
-  return function getFacturas(_x, _x2) {
+  return function getPdf(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 
-var getFacturasCliente = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-    var ciCliente, connection, result;
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.prev = 0;
-            ciCliente = req.params.ciCliente;
-            _context2.next = 4;
-            return (0, _database.getConnection)();
-
-          case 4:
-            connection = _context2.sent;
-            _context2.next = 7;
-            return connection.query("SELECT xfac.*,xcli.*,xusu.* FROM factura xfac, cliente xcli,usuario xusu WHERE xcli.ciCliente = xfac.ciCliente AND xusu.ci=?", ciCliente);
-
-          case 7:
-            result = _context2.sent;
-            console.log(result);
-            res.json(result);
-            _context2.next = 16;
-            break;
-
-          case 12:
-            _context2.prev = 12;
-            _context2.t0 = _context2["catch"](0);
-            res.status(500); //error de lado del servidor
-
-            res.send(_context2.t0.message);
-
-          case 16:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2, null, [[0, 12]]);
-  }));
-
-  return function getFacturasCliente(_x3, _x4) {
-    return _ref2.apply(this, arguments);
-  };
-}();
-
-var addFactura = /*#__PURE__*/function () {
+var getFacturas = /*#__PURE__*/function () {
   var _ref3 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
-    var connection, _req$body, fecha, hora, total, cambio, ciCliente, pedidos, factura, result, busca, idFactura, nroPedido, result2;
-
+    var connection, result;
     return _regeneratorRuntime().wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
@@ -116,89 +185,226 @@ var addFactura = /*#__PURE__*/function () {
 
           case 3:
             connection = _context4.sent;
-            _req$body = req.body, fecha = _req$body.fecha, hora = _req$body.hora, total = _req$body.total, cambio = _req$body.cambio, ciCliente = _req$body.ciCliente, pedidos = _req$body.pedidos;
-            console.log("Datos para registro de la factura");
-            /*console.log(fecha);
-            console.log(idMesa);
-            console.log(hora);*/
+            _context4.next = 6;
+            return connection.query("SELECT * FROM factura");
 
-            factura = {
-              fecha: fecha,
-              hora: hora,
-              total: total,
-              cambio: cambio,
-              ciCliente: ciCliente
-            };
-            _context4.next = 9;
-            return connection.query('INSERT INTO factura SET ?', factura);
-
-          case 9:
+          case 6:
             result = _context4.sent;
             console.log(result);
-            _context4.next = 13;
-            return connection.query('SELECT idFactura FROM factura WHERE fecha LIKE ? AND hora LIKE ?', [fecha, hora]);
-
-          case 13:
-            busca = _context4.sent;
-            idFactura = busca[0].idFactura;
-            console.log(idFactura);
-            nroPedido = "";
-            pedidos.forEach( /*#__PURE__*/function () {
-              var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(element) {
-                return _regeneratorRuntime().wrap(function _callee3$(_context3) {
-                  while (1) {
-                    switch (_context3.prev = _context3.next) {
-                      case 0:
-                        nroPedido = element.nroPedido;
-                        console.log(pay);
-                        _context3.next = 4;
-                        return connection.query("UPDATE pedido SET nro_factura = ? WHERE nroPedido = ?", [nro_factura, nroPedido]);
-
-                      case 4:
-                        result2 = _context3.sent;
-                        console.log(result2);
-
-                      case 6:
-                      case "end":
-                        return _context3.stop();
-                    }
-                  }
-                }, _callee3);
-              }));
-
-              return function (_x7) {
-                return _ref4.apply(this, arguments);
-              };
-            }());
-            res.json({
-              message: "Factura Registrada"
-            });
-            _context4.next = 25;
+            res.json(result);
+            _context4.next = 15;
             break;
 
-          case 21:
-            _context4.prev = 21;
+          case 11:
+            _context4.prev = 11;
             _context4.t0 = _context4["catch"](0);
             res.status(500); //error de lado del servidor
 
             res.send(_context4.t0.message);
 
-          case 25:
+          case 15:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[0, 21]]);
+    }, _callee4, null, [[0, 11]]);
   }));
 
-  return function addFactura(_x5, _x6) {
+  return function getFacturas(_x4, _x5) {
     return _ref3.apply(this, arguments);
   };
 }();
 
+var getFacturasCliente = /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+    var ciCliente, connection, result;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            _context5.prev = 0;
+            ciCliente = req.params.ciCliente;
+            _context5.next = 4;
+            return (0, _database.getConnection)();
+
+          case 4:
+            connection = _context5.sent;
+            _context5.next = 7;
+            return connection.query("SELECT xfac.*,xcli.*,xusu.* FROM factura xfac, cliente xcli,usuario xusu WHERE xcli.ciCliente = xfac.ciCliente AND xusu.ci=?", ciCliente);
+
+          case 7:
+            result = _context5.sent;
+            console.log(result);
+            res.json(result);
+            _context5.next = 16;
+            break;
+
+          case 12:
+            _context5.prev = 12;
+            _context5.t0 = _context5["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context5.t0.message);
+
+          case 16:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5, null, [[0, 12]]);
+  }));
+
+  return function getFacturasCliente(_x6, _x7) {
+    return _ref4.apply(this, arguments);
+  };
+}(); //OBTENIENDO PEDIDOS CON UN ESTADO 2 PARA SER FACTURADOS
+//obteniendo pedidos para que el CAJERO pueda facturar
+
+
+var getPedidosCajero = /*#__PURE__*/function () {
+  var _ref5 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee6(req, res) {
+    var connection, result;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            _context6.prev = 0;
+            _context6.next = 3;
+            return (0, _database.getConnection)();
+
+          case 3:
+            connection = _context6.sent;
+            _context6.next = 6;
+            return connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '2' AND xped.fecha = (SELECT DATE(NOW()) AS fecha)");
+
+          case 6:
+            result = _context6.sent;
+            console.log(result);
+            res.json(result);
+            _context6.next = 15;
+            break;
+
+          case 11:
+            _context6.prev = 11;
+            _context6.t0 = _context6["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context6.t0.message);
+
+          case 15:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6, null, [[0, 11]]);
+  }));
+
+  return function getPedidosCajero(_x8, _x9) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+var addFactura = /*#__PURE__*/function () {
+  var _ref6 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee8(req, res) {
+    var connection, _req$body, total, cambio, fecha, hora, ciCliente, ciCajero, pedidos, factura, result, busca, idFactura, nroPedido, result2;
+
+    return _regeneratorRuntime().wrap(function _callee8$(_context8) {
+      while (1) {
+        switch (_context8.prev = _context8.next) {
+          case 0:
+            _context8.prev = 0;
+            _context8.next = 3;
+            return (0, _database.getConnection)();
+
+          case 3:
+            connection = _context8.sent;
+            _req$body = req.body, total = _req$body.total, cambio = _req$body.cambio, fecha = _req$body.fecha, hora = _req$body.hora, ciCliente = _req$body.ciCliente, ciCajero = _req$body.ciCajero, pedidos = _req$body.pedidos;
+            console.log("Datos para registro de la factura");
+            /*console.log(fecha);
+            console.log(idMesa);
+            console.log(hora);*/
+
+            console.log(ciCajero);
+            factura = {
+              total: total,
+              cambio: cambio,
+              fecha: fecha,
+              hora: hora,
+              ciCliente: ciCliente,
+              ciCajero: ciCajero
+            };
+            _context8.next = 10;
+            return connection.query('INSERT INTO factura SET ?', factura);
+
+          case 10:
+            result = _context8.sent;
+            console.log(result);
+            _context8.next = 14;
+            return connection.query('SELECT idFactura FROM factura WHERE fecha LIKE ? AND hora LIKE ?', [fecha, hora]);
+
+          case 14:
+            busca = _context8.sent;
+            idFactura = busca[0].idFactura;
+            console.log(idFactura);
+            nroPedido = "";
+            pedidos.forEach( /*#__PURE__*/function () {
+              var _ref7 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee7(element) {
+                return _regeneratorRuntime().wrap(function _callee7$(_context7) {
+                  while (1) {
+                    switch (_context7.prev = _context7.next) {
+                      case 0:
+                        nroPedido = element.nroPedido;
+                        _context7.next = 3;
+                        return connection.query("UPDATE pedido SET idFactura = ? WHERE nroPedido = ?", [idFactura, nroPedido]);
+
+                      case 3:
+                        result2 = _context7.sent;
+                        console.log(result2);
+
+                      case 5:
+                      case "end":
+                        return _context7.stop();
+                    }
+                  }
+                }, _callee7);
+              }));
+
+              return function (_x12) {
+                return _ref7.apply(this, arguments);
+              };
+            }());
+            res.json({
+              message: "Factura Registrada",
+              idFactura: idFactura
+            });
+            _context8.next = 26;
+            break;
+
+          case 22:
+            _context8.prev = 22;
+            _context8.t0 = _context8["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context8.t0.message);
+
+          case 26:
+          case "end":
+            return _context8.stop();
+        }
+      }
+    }, _callee8, null, [[0, 22]]);
+  }));
+
+  return function addFactura(_x10, _x11) {
+    return _ref6.apply(this, arguments);
+  };
+}();
+
 var metodos = {
+  getPdf: getPdf,
   getFacturas: getFacturas,
   getFacturasCliente: getFacturasCliente,
-  addFactura: addFactura
+  addFactura: addFactura,
+  getPedidosCajero: getPedidosCajero
 };
 exports.metodos = metodos;
