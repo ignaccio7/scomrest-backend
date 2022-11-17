@@ -13,7 +13,7 @@ router.post('/',platoControllers.addPlato);
 //agregar ingredientes a un plato
 router.post('/ingredientesPlato/',platoControllers.addIngredientesPlato);
 //actualizar ingredientes de un plato
-router.post('/actuingredientesPlato/',platoControllers.addIngredientesPlato);
+router.post('/actuingredientesPlato/',platoControllers.updateIngredientesPlato);
 //para actualizar el stock
 router.put('/:idProducto',platoControllers.addStock);
 //para eliminar el plato

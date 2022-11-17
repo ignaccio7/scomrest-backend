@@ -245,7 +245,7 @@ const getPedidosCliente = async (req, res) => {
         const { ci } = req.params;
         const connection = await getConnection();
         //const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas,xche.institucion,xusu.nombre,xusu.appaterno FROM pedido xped, mesa xmes, chef xche,usuario xusu WHERE xped.idMesa = xmes.idMesa AND xped.cichef = xche.cichef AND xusu.ci = xche.cichef");
-        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.idMesa,xmes.nrosillas,xped.ciCliente,xped.habilitado FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND ciCliente =  ?", ci);
+        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.idMesa,xmes.nrosillas,xped.ciCliente,xped.habilitado FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND ciCliente =  ? AND xped.fecha = (SELECT DATE(NOW()) AS fecha)", ci);
         console.log(result);
         res.json(result);
     } catch (error) {
@@ -258,7 +258,7 @@ const getPedidosCliente = async (req, res) => {
 const getPedidosCamarero = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '0'");
+        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '0' AND xped.fecha = (SELECT DATE(NOW()) AS fecha)");
         console.log(result);
         res.json(result);
     } catch (error) {
@@ -271,7 +271,7 @@ const getPedidosCamarero = async (req, res) => {
 const getPedidosChef = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '1'");
+        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '1' AND xped.fecha = (SELECT DATE(NOW()) AS fecha)");
         console.log(result);
         res.json(result);
     } catch (error) {

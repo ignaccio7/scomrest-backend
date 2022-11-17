@@ -293,7 +293,7 @@ const loginUsuario = async (req, res) => {
                 expiresIn: 86400 //24h
             })
             console.log(result);
-            let tipo="";
+            let tipo="administrador";
             //const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
             const resultCliente = await connection.query("SELECT ciCliente FROM cliente");
             console.log(resultCliente);
@@ -315,6 +315,18 @@ const loginUsuario = async (req, res) => {
                     tipo="chef";
                 }
             });
+
+            //agregado para cajero
+            const resultCajero= await connection.query("SELECT ciCajero FROM cajero");
+            console.log(resultCajero);
+            const rcaj = Object.values(JSON.parse(JSON.stringify(resultCajero)));
+            console.log(rcaj);
+            rcaj.forEach(element => {
+                if (element.ciCajero ===ci) {
+                    tipo="cajero";
+                }
+            });
+            //agregado para cajero
 
             const resultCamarero = await connection.query("SELECT ciCamarero FROM camarero");
             console.log(resultCamarero);

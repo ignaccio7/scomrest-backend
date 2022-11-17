@@ -100,7 +100,7 @@ const getFacturasCliente = async (req, res) => {
 const getPedidosCajero = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '2'");
+        const result = await connection.query("SELECT xped.nroPedido,xped.fecha,xped.habilitado,xped.idMesa,xmes.nrosillas FROM pedido xped, mesa xmes WHERE xped.idMesa = xmes.idMesa AND xped.habilitado LIKE '2' AND xped.fecha = (SELECT DATE(NOW()) AS fecha)");
         console.log(result);
         res.json(result);
     } catch (error) {

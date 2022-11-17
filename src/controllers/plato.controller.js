@@ -31,7 +31,7 @@ const getIngredientesPlato = async (req,res)=>{
         const { idProducto } = req.params;
 
         const connection = await getConnection();
-        const result = await connection.query("SELECT xing.nombre,xing.tipo FROM contiene xcont,ingrediente xing WHERE xcont.idIng = xing.idIng  AND idProducto =?", idProducto);
+        const result = await connection.query("SELECT xing.idIng,xing.nombre,xing.tipo FROM contiene xcont,ingrediente xing WHERE xcont.idIng = xing.idIng  AND idProducto =?", idProducto);
         console.log(result);
         res.json(result);
     } catch (error) {
