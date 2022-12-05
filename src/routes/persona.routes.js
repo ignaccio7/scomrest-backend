@@ -6,6 +6,10 @@ const router = Router();
 
 //para listar los clientes
 router.get('/clientes/',personaController.getClientes);
+router.get('/cajeros/',personaController.getCajeros);
+router.get('/chefs/',personaController.getChefs);
+router.get('/camareros/',personaController.getCamareros);
+router.get('/administradores/',personaController.getAdministradores);
 
 router.get('/',personaController.getPersonas);
 //router.get('/:ci',verifyToken,personaController.getPersona);
