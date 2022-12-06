@@ -5,7 +5,7 @@ import config from '../config.js';
 const getPersonas = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT *,tipousuario(ci) as tipo FROM usuario");
+        const result = await connection.query("SELECT * FROM usuario u");
         console.log(result);
         res.json(result);
     } catch (error) {
@@ -17,7 +17,7 @@ const getPersonas = async (req, res) => {
 const getClientes = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT xusu.* FROM usuario xusu,cliente xcli WHERE xcli.ciCliente=xusu.ci");        
+        const result = await connection.query("SELECT u.*,c.* FROM usuario u, cliente c WHERE u.ci = c.ciCliente");
         console.log(result);
         res.json(result);
     } catch (error) {
@@ -25,7 +25,50 @@ const getClientes = async (req, res) => {
         res.send(error.message);
     }
 }
-
+const getCajeros = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const result = await connection.query("SELECT u.*,c.* FROM usuario u, cajero c WHERE u.ci = c.ciCajero");
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+}
+const getChefs = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const result = await connection.query("SELECT u.*,c.* FROM usuario u, chef c WHERE u.ci = c.ciChef");
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+}
+const getCamareros = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const result = await connection.query("SELECT u.*,c.* FROM usuario u, camarero c WHERE u.ci = c.ciCamarero");
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+}
+const getAdministradores = async (req, res) => {
+    try {
+        const connection = await getConnection();
+        const result = await connection.query("SELECT u.* FROM usuario u WHERE u.ci NOT IN (SELECT ciCliente FROM cliente) AND u.ci NOT IN (SELECT ciChef FROM chef) AND u.ci NOT IN (SELECT ciCajero FROM cajero) AND u.ci NOT IN (SELECT ciCamarero FROM camarero) ");
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }
+}
 
 const getPersona = async (req, res) => {
     try {
@@ -35,11 +78,56 @@ const getPersona = async (req, res) => {
         const result = await connection.query("SELECT * FROM usuario WHERE ci=? LIMIT 1", ci);
 
         //PARA OBTENER EL TIPO DE USUARIO
-        const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
+        //const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
+        let tipo = "administrador";
+        //const result2 = await connection.query("SELECT tipousuario(?) as tipo FROM Dual", ci);
+        const resultCliente = await connection.query("SELECT ciCliente FROM cliente");
+        console.log(resultCliente);
+        const rcl = Object.values(JSON.parse(JSON.stringify(resultCliente)));
+        console.log(rcl);
+        rcl.forEach(element => {
+            console.log("codigo de cliente:", element.ciCliente);
+            if (element.ciCliente == ci) {
+                tipo = "cliente";
+            }
+        });
+
+        const resultChef = await connection.query("SELECT ciChef FROM chef");
+        console.log(resultChef);
+        const rch = Object.values(JSON.parse(JSON.stringify(resultChef)));
+        console.log(rch);
+        rch.forEach(async element => {
+            if (await element.ciChef == ci) {
+                tipo = "chef";
+            }
+        });
+
+        const resultCamarero = await connection.query("SELECT ciCamarero FROM camarero");
+        console.log(resultCamarero);
+        const rca = Object.values(JSON.parse(JSON.stringify(resultCamarero)));
+        console.log(rca);
+        rca.forEach(element => {
+            if (element.ciCamarero == ci) {
+                tipo = "camarero";
+            }
+        });
+
+        const resultCajero = await connection.query("SELECT ciCajero FROM cajero");
+        console.log(resultCamarero);
+        const rcaj = Object.values(JSON.parse(JSON.stringify(resultCajero)));
+        console.log(rcaj);
+        rcaj.forEach(element => {
+            if (element.ciCajero == ci) {
+                tipo = "cajero";
+            }
+        });
+
+        console.log("EL TIPO ES:", tipo);
+        //PARA OBTENER EL TIPO DE USUARIO        
         let institucion = "";
         let aniosExp = "";
         let profesion = "";
-        switch (result2[0].tipo) {
+        switch (tipo) {
             case 'chef':
                 const result3 = await connection.query("SELECT xch.institucion,xch.aniosexp FROM chef xch, usuario xusu WHERE xch.cichef = xusu.ci AND xch.ciChef = ?", ci);
                 institucion = result3[0].institucion;
@@ -59,7 +147,7 @@ const getPersona = async (req, res) => {
         }
 
         console.log(result);
-        console.log(result2[0].tipo);
+        //console.log(result2[0].tipo);
         res.json({
             nombre: result[0].nombre,
             apPaterno: result[0].apPaterno,
@@ -71,7 +159,7 @@ const getPersona = async (req, res) => {
             institucion,
             aniosExp,
             profesion,
-            tipo: result2[0].tipo
+            tipo
         });
     } catch (error) {
         res.status(500);//error de lado del servidor
@@ -287,7 +375,7 @@ const loginUsuario = async (req, res) => {
         if (result.length > 0) {
 
             const ci = result[0].ci;
-            console.log("el ci es :",ci);
+            console.log("el ci es :", ci);
             //para el token
             const token = jwt.sign({ ci }, config.SECRET, {
                 expiresIn: 86400 //24h
@@ -300,9 +388,9 @@ const loginUsuario = async (req, res) => {
             const rcl = Object.values(JSON.parse(JSON.stringify(resultCliente)));
             console.log(rcl);
             rcl.forEach(element => {
-                console.log("codigo de cliente:",element.ciCliente);
-                if (element.ciCliente ===ci) {
-                    tipo="cliente";
+                console.log("codigo de cliente:", element.ciCliente);
+                if (element.ciCliente === ci) {
+                    tipo = "cliente";
                 }
             });
 
@@ -311,8 +399,8 @@ const loginUsuario = async (req, res) => {
             const rch = Object.values(JSON.parse(JSON.stringify(resultChef)));
             console.log(rch);
             rch.forEach(element => {
-                if (element.ciChef ===ci) {
-                    tipo="chef";
+                if (element.ciChef === ci) {
+                    tipo = "chef";
                 }
             });
 
@@ -333,12 +421,12 @@ const loginUsuario = async (req, res) => {
             const rca = Object.values(JSON.parse(JSON.stringify(resultCamarero)));
             console.log(rca);
             rca.forEach(element => {
-                if (element.ciCamarero ===ci) {
-                    tipo="camarero";
+                if (element.ciCamarero === ci) {
+                    tipo = "camarero";
                 }
             });
 
-            console.log("EL TIPO ES:",tipo);
+            console.log("EL TIPO ES:", tipo);
             res.json({ token, tipo, username, ci });
         } else {
             console.log(result);
@@ -360,4 +448,8 @@ export const metodos = {
     addClient,
     asignaRol,
     getClientes,
+    getCajeros,
+    getChefs,
+    getCamareros,
+    getAdministradores,
 };
