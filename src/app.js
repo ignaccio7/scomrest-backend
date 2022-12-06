@@ -9,6 +9,8 @@ import pedidoRouter from './routes/pedido.routes';
 import bebidaRouter from './routes/bebida.routes';
 import mesaRouter from './routes/mesa.routes';
 import facturaRouter from './routes/factura.routes';
+import proveedorRouter from './routes/proveedor.routes';
+
 import config from "./config.js";
 
 console.log(config.port);
@@ -39,6 +41,7 @@ app.use('/api/pedido/',pedidoRouter);
 app.use('/api/bebida/',bebidaRouter);
 app.use('/api/mesa/',mesaRouter);
 app.use('/api/factura/',facturaRouter);
+app.use('/api/proveedor/',proveedorRouter);
 
 app.get('/',(req,res)=>{
     res.json({
