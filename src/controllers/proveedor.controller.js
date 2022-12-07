@@ -12,6 +12,19 @@ const getProveedores = async (req, res) => {
     }
 }
 
+const getProveedor = async (req, res) => {
+    try {
+        const { idProveedor } = req.params;
+        const connection = await getConnection();
+        const result = await connection.query("SELECT nombre,direccion,contacto,idProveedor FROM proveedor WHERE idProveedor=?",idProveedor);
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
 const addProveedor = async (req, res) => {
     try {
         const { nombre,direccion,contacto } = req.body;
@@ -108,6 +121,7 @@ const getPedidosChef = async (req, res) => {
 
 export const metodos = {
     getProveedores,
+    getProveedor,
     addProveedor,
     deleteProveedor,
     updateProveedor,
