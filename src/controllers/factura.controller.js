@@ -147,7 +147,22 @@ const addFactura = async (req, res) => {
     }
 }
 
+//obteniendo pedidos POR RANGO
+const postFacturasRango = async (req, res) => {
+    try {
+        const { fechaInicio, fechaFin } = req.body;
+        const connection = await getConnection();
+        const result = await connection.query("SELECT xfac.total,xfac.cambio,xfac.fecha,xfac.idFactura,xfac.ciCliente,TMP.nombre as nombreCliente,xfac.ciCajero,TMP2.nombre as nombreCajero FROM factura xfac,(SELECT ci,nombre FROM usuario) TMP, (SELECT ci,nombre FROM usuario) TMP2 WHERE xfac.ciCliente = TMP.ci AND xfac.ciCajero = TMP2.ci AND xfac.fecha BETWEEN ? AND ?", [fechaInicio,fechaFin]);
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
 export const metodos = {
+    postFacturasRango,
     getPdf,
     getFacturas,
     getFacturasCliente,

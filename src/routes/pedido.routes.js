@@ -2,6 +2,8 @@ import { Router } from "express";
 import { metodos as pedidoController } from '../controllers/pedido.controller.js';
 
 const router = Router();
+//para listar los pedidos por rango ESTE ES POST
+router.post('/pedidosrango/',pedidoController.postPedidosRango);
 //para listar los pedidos no habilitados
 router.get('/',pedidoController.getPedidos);
 //para listar los pedidos habilitados

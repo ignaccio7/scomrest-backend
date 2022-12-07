@@ -358,7 +358,22 @@ const actualizaPedido = async (req, res) => {
     }
 }
 
+//obteniendo pedidos POR RANGO
+const postPedidosRango = async (req, res) => {
+    try {
+        const { fechaInicio, fechaFin } = req.body;
+        const connection = await getConnection();
+        const result = await connection.query("SELECT xped.fecha,xped.nroPedido,xped.idMesa,xped.ciChef,xusu.nombre as nombreChef,xped.idFactura,xped.ciCliente,TMP.nombre as nombreCliente,xped.ciCamarero,TMP2.nombre as nombreCamarero FROM pedido xped,usuario xusu,(SELECT ci,nombre FROM usuario) TMP,(SELECT ci,nombre FROM usuario) TMP2 WHERE habilitado = '2' AND xped.ciChef = xusu.ci AND xped.ciCliente = TMP.ci AND xped.ciCamarero = TMP2.ci AND xped.fecha BETWEEN ? AND ?", [fechaInicio,fechaFin]);
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
 export const metodos = {
+    postPedidosRango,
     getPedidos,
     getPedidosHabilitados,
     getproductosPedido,

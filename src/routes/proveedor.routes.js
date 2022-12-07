@@ -3,6 +3,9 @@ import { metodos as proveedorController } from '../controllers/proveedor.control
 
 const router = Router();
 
+//para listar los pedidos por rango ESTE ES POST
+router.post('/proveedoresrango/',proveedorController.postPedidoChefProveedorRango);
+
 router.get('/',proveedorController.getProveedores);
 router.get('/pedidos/',proveedorController.getPedidosChefProveedorIngrediente);
 router.get('/:idProveedor',proveedorController.getProveedor);

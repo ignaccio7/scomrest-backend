@@ -119,7 +119,22 @@ const getPedidosChef = async (req, res) => {
     }
 }
 
+//obteniendo pedidos POR RANGO
+const postPedidoChefProveedorRango = async (req, res) => {
+    try {
+        const { fechaInicio, fechaFin } = req.body;
+        const connection = await getConnection();
+        const result = await connection.query("SELECT cip.ciChef,ch.nombre as nombrechef,cip.idProveedor,prov.nombre as nombreProveedor,cip.idIng,ing.nombre as nombreIngrediente,cip.cantidad,cip.fechaCad,cip.precio FROM solicitacip cip, usuario ch, proveedor prov, ingrediente ing WHERE cip.ciChef = ch.ci AND cip.idProveedor = prov.idProveedor AND cip.idIng = ing.idIng AND cip.fechaCad BETWEEN ? AND ?", [fechaInicio,fechaFin]);
+        console.log(result);
+        res.json(result);
+    } catch (error) {
+        res.status(500);//error de lado del servidor
+        res.send(error.message);
+    }
+}
+
 export const metodos = {
+    postPedidoChefProveedorRango,
     getProveedores,
     getProveedor,
     addProveedor,
