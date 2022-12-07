@@ -4,8 +4,8 @@ import { metodos as proveedorController } from '../controllers/proveedor.control
 const router = Router();
 
 router.get('/',proveedorController.getProveedores);
-router.get('/:idProveedor',proveedorController.getProveedor);
 router.get('/pedidos/',proveedorController.getPedidosChefProveedorIngrediente);
+router.get('/:idProveedor',proveedorController.getProveedor);
 router.get('/pedidos/:ci',proveedorController.getPedidosChef);
 router.post('/pedidos/',proveedorController.addChefIngredienteProveedor);
 router.post('/',proveedorController.addProveedor);
