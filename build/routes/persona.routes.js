@@ -14,6 +14,10 @@ var _middlewares = require("../middlewares");
 var router = (0, _express.Router)(); //para listar los clientes
 
 router.get('/clientes/', _personaControlller.metodos.getClientes);
+router.get('/cajeros/', _personaControlller.metodos.getCajeros);
+router.get('/chefs/', _personaControlller.metodos.getChefs);
+router.get('/camareros/', _personaControlller.metodos.getCamareros);
+router.get('/administradores/', _personaControlller.metodos.getAdministradores);
 router.get('/', _personaControlller.metodos.getPersonas); //router.get('/:ci',verifyToken,personaController.getPersona);
 
 router.get('/:ci', _personaControlller.metodos.getPersona);

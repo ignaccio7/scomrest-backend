@@ -9,7 +9,9 @@ var _express = require("express");
 
 var _facturaController = require("../controllers/factura.controller.js");
 
-var router = (0, _express.Router)(); //PARA OBTENER EL PDF
+var router = (0, _express.Router)(); //para listar los pedidos por rango ESTE ES POST
+
+router.post('/facturasrango/', _facturaController.metodos.postFacturasRango); //PARA OBTENER EL PDF
 
 router.get('/downPdf/:idFactura', _facturaController.metodos.getPdf);
 router.get('/', _facturaController.metodos.getFacturas); //obteniendo facturas para el cajero

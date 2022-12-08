@@ -25,6 +25,8 @@ var _mesa = _interopRequireDefault(require("./routes/mesa.routes"));
 
 var _factura = _interopRequireDefault(require("./routes/factura.routes"));
 
+var _proveedor = _interopRequireDefault(require("./routes/proveedor.routes"));
+
 var _config = _interopRequireDefault(require("./config.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -53,6 +55,7 @@ app.use('/api/pedido/', _pedido["default"]);
 app.use('/api/bebida/', _bebida["default"]);
 app.use('/api/mesa/', _mesa["default"]);
 app.use('/api/factura/', _factura["default"]);
+app.use('/api/proveedor/', _proveedor["default"]);
 app.get('/', function (req, res) {
   res.json({
     author: app.get('pkg').author,

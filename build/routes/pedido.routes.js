@@ -9,7 +9,9 @@ var _express = require("express");
 
 var _pedidoController = require("../controllers/pedido.controller.js");
 
-var router = (0, _express.Router)(); //para listar los pedidos no habilitados
+var router = (0, _express.Router)(); //para listar los pedidos por rango ESTE ES POST
+
+router.post('/pedidosrango/', _pedidoController.metodos.postPedidosRango); //para listar los pedidos no habilitados
 
 router.get('/', _pedidoController.metodos.getPedidos); //para listar los pedidos habilitados
 

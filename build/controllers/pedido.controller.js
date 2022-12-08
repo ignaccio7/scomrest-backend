@@ -780,9 +780,56 @@ var actualizaPedido = /*#__PURE__*/function () {
   return function actualizaPedido(_x21, _x22) {
     return _ref12.apply(this, arguments);
   };
+}(); //obteniendo pedidos POR RANGO
+
+
+var postPedidosRango = /*#__PURE__*/function () {
+  var _ref15 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee15(req, res) {
+    var _req$body4, fechaInicio, fechaFin, connection, result;
+
+    return _regeneratorRuntime().wrap(function _callee15$(_context15) {
+      while (1) {
+        switch (_context15.prev = _context15.next) {
+          case 0:
+            _context15.prev = 0;
+            _req$body4 = req.body, fechaInicio = _req$body4.fechaInicio, fechaFin = _req$body4.fechaFin;
+            _context15.next = 4;
+            return (0, _database.getConnection)();
+
+          case 4:
+            connection = _context15.sent;
+            _context15.next = 7;
+            return connection.query("SELECT xped.fecha,xped.nroPedido,xped.idMesa,xped.ciChef,xusu.nombre as nombreChef,xped.idFactura,xped.ciCliente,TMP.nombre as nombreCliente,xped.ciCamarero,TMP2.nombre as nombreCamarero FROM pedido xped,usuario xusu,(SELECT ci,nombre FROM usuario) TMP,(SELECT ci,nombre FROM usuario) TMP2 WHERE habilitado = '2' AND xped.ciChef = xusu.ci AND xped.ciCliente = TMP.ci AND xped.ciCamarero = TMP2.ci AND xped.fecha BETWEEN ? AND ?", [fechaInicio, fechaFin]);
+
+          case 7:
+            result = _context15.sent;
+            console.log(result);
+            res.json(result);
+            _context15.next = 16;
+            break;
+
+          case 12:
+            _context15.prev = 12;
+            _context15.t0 = _context15["catch"](0);
+            res.status(500); //error de lado del servidor
+
+            res.send(_context15.t0.message);
+
+          case 16:
+          case "end":
+            return _context15.stop();
+        }
+      }
+    }, _callee15, null, [[0, 12]]);
+  }));
+
+  return function postPedidosRango(_x25, _x26) {
+    return _ref15.apply(this, arguments);
+  };
 }();
 
 var metodos = {
+  postPedidosRango: postPedidosRango,
   getPedidos: getPedidos,
   getPedidosHabilitados: getPedidosHabilitados,
   getproductosPedido: getproductosPedido,
