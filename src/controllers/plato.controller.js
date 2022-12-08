@@ -166,9 +166,11 @@ const updatePlato = async (req, res) => {
         const producto={
             nombre,precio,descripcion,idProducto
         }
+        console.log(producto);
         const plato={
             stock,ciudadProv,idProducto,image
         }
+        console.log(plato);
         //const result=await connection.query("UPDATE usuario SET ? WHERE ci = ?",[usuario, ci]);
         const connection = await getConnection();
         const result = await connection.query('UPDATE producto SET ? WHERE idProducto=?',[producto,idProducto]);
